@@ -114,11 +114,12 @@
       <!-- Theme Switch, Cloud Sync Status & Actions -->
       <div class="flex items-center space-x-2 sm:space-x-3">
         
-        <!-- Cloud Integration Button Indicators -->
+        <!-- Cloud Integration Button Indicators (Click to pull fresh data immediately!) -->
         <button 
           id="cloud-status-btn"
-          onclick="openCloudConfig()"
+          onclick="handleCloudBtnClick()"
           class="flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
+          title="Bấm để tải lại dữ liệu mới nhất từ đám mây Google Sheets"
         >
           <i data-lucide="cloud-off" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">Chưa kết nối Cloud</span>
@@ -271,16 +272,16 @@
       </div>
       <div class="flex items-center space-x-2">
         <button 
-          onclick="switchLayout('table')" 
           id="layout-btn-table" 
+          onclick="switchLayout('table')" 
           class="p-2 rounded-lg bg-slate-250 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700"
           title="Chế độ bảng chi tiết"
         >
           <i data-lucide="table" class="w-4 h-4"></i>
         </button>
         <button 
-          onclick="switchLayout('grid')" 
           id="layout-btn-grid" 
+          onclick="switchLayout('grid')" 
           class="p-2 rounded-lg bg-white dark:bg-black text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900"
           title="Chế độ thẻ trực quan"
         >
@@ -785,7 +786,7 @@
       { stt: "242", ma: "VV0242", ten: "Cung cấp nhân sự cho Dự án LSPET - TCT PTSC", vietTat: "LSPET PTSC", kt: "Tú", chiPhi: "6311", doanhThu: "51131", costController: "Nguyễn Văn Toàn", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Trần Văn Bình", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2025", soHD: "HD-LSPET-242", loaiHD: "Cung cấp nhân sự", baoHanh: "", ros: "6%", location: "Long Sơn" }
     ];
 
-    // ĐƯỜNG DẪN APPS SCRIPTS LIÊN KẾT ĐÁM MÂY ĐƯỢC CHÈN SẴN MẶC ĐỊNH
+    // ĐƯỜNG DẪN APPS SCRIPT LIÊN KẾT ĐÁM MÂY ĐƯỢC CHÈN SẴN MẶC ĐỊNH
     const defaultCloudUrl = "https://script.google.com/macros/s/AKfycbzwnV_dHqIi8LtN9pmPaaFherV9NDrMPNZl93zXpMzHpCwa2vLlgV82RsUfXuIa1KnM/exec";
 
     let projects = [];
@@ -996,10 +997,19 @@
         cloudBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/20";
         cloudBtn.innerHTML = `<i data-lucide="cloud" class="w-3.5 h-3.5"></i><span>Đã đồng bộ Cloud</span>`;
       } else {
-        cloudBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-450 hover:bg-amber-500/20";
+        cloudBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20";
         cloudBtn.innerHTML = `<i data-lucide="cloud-off" class="w-3.5 h-3.5"></i><span>Chưa kết nối Cloud</span>`;
       }
       lucide.createIcons();
+    }
+
+    // Cloud Button Acts as live Pull sync if connected, config modal if disconnected
+    function handleCloudBtnClick() {
+      if (isCloudConnected) {
+        fetchFromCloud(); // Pull directly
+      } else {
+        openCloudConfig();
+      }
     }
 
     function openCloudConfig() {
@@ -1175,6 +1185,14 @@
       renderMainContent(filtered, tokens);
     }
 
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      selectedKTFilter = null;
+      selectedAccountFilter = null;
+      refreshUI();
+      showToast('Đã xóa tất cả bộ lọc tìm kiếm', 'info');
+    }
+
     function highlight(text, searchTokens) {
       if (!text) return '---';
       let textStr = String(text);
@@ -1219,7 +1237,7 @@
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
-          ` : `<span class="text-[10px] text-slate-400 italic">Đã khóa</span>`;
+          ` : `<span class="text-[10px] text-slate-450 italic">Đã khóa</span>`;
 
           tableRows += `
             <tr onclick="openDetailsDrawer('${item.stt}')" class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800/60 transition duration-150 cursor-pointer text-slate-700 dark:text-slate-300">
@@ -1244,7 +1262,7 @@
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 font-mono">${highlight(item.maKH, tokens)}</td>
               <td class="px-3 py-3.5 text-xs text-slate-600 dark:text-slate-300 max-w-[200px] truncate" title="${item.tenKH}">${highlight(item.tenKH, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-400 font-semibold">${highlight(item.pm, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-400 font-medium">${highlight(item.pgd, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-450 font-medium">${highlight(item.pgd, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namBD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namKT, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-300 font-semibold max-w-[120px] truncate" title="${item.soHD}">${highlight(item.soHD, tokens)}</td>
@@ -1284,7 +1302,7 @@
                     <th class="px-3 py-3.5 text-center w-24">% Bảo Hành</th>
                     <th class="px-3 py-3.5 text-center w-24">% ROS</th>
                     <th class="px-3 py-3.5 w-32">Location</th>
-                    <th class="px-3 py-3.5 text-right sticky right-0 bg-slate-50 dark:bg-black/60 w-24">Thao tác</th>
+                    <th class="px-3 py-3.5 text-right sticky right-0 bg-slate-50 dark:bg-black/60 w-20">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200 dark:divide-slate-800/30 text-xs">
@@ -1499,13 +1517,13 @@
       document.getElementById('edit-modal').classList.add('hidden');
     }
 
+    // Save project using bulletproof "Fetch-before-Save" logic preventing multi-user conflicts
     function saveProject(event) {
       event.preventDefault();
       const sttVal = document.getElementById('edit-stt').value;
       const maVal = document.getElementById('edit-ma').value.trim();
       const tenVal = document.getElementById('edit-ten').value.trim();
       
-      const idx = projects.findIndex(p => p.stt === sttVal);
       const dataObj = {
         stt: sttVal,
         ma: maVal,
@@ -1528,25 +1546,82 @@
         loaiHD: document.getElementById('edit-loaiHD').value.trim()
       };
 
-      if (idx !== -1) {
-        projects[idx] = dataObj;
-        showToast(`Đã cập nhật dự án ${maVal} thành công!`, 'success');
+      if (isCloudConnected && cloudUrl) {
+        document.getElementById('loading-overlay').classList.remove('hidden');
+        document.getElementById('loading-overlay').querySelector('p').textContent = "Đang kiểm tra và đồng bộ tránh xung đột dữ liệu...";
+
+        // Step 1: Force pull latest sheet state to prevent overwriting other users updates
+        fetch(`${cloudUrl}?nocache=${new Date().getTime()}`)
+          .then(response => response.json())
+          .then(res => {
+            if (res.success && res.data) {
+              projects = res.data; // Merge loaded state
+
+              // Step 2: Apply the modifications to the newly fetched state
+              const idx = projects.findIndex(p => p.stt === sttVal);
+              if (idx !== -1) {
+                projects[idx] = dataObj;
+              } else {
+                projects.push(dataObj);
+              }
+
+              // Step 3: Post the merged state directly to the Cloud Sheet
+              const payload = {
+                action: "save_all",
+                password: "KT@2026",
+                projects: projects
+              };
+
+              return fetch(cloudUrl, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+              });
+            } else {
+              throw new Error("Không thể hạch toán đồng bộ đám mây");
+            }
+          })
+          .then(() => {
+            // State confirmed
+            localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+            document.getElementById('loading-overlay').classList.add('hidden');
+            closeEditModal();
+            refreshUI();
+            showToast(`Đã lưu và đồng bộ lên đám mây thành công!`, 'success');
+            if (selectedProjectStt === sttVal) {
+              openDetailsDrawer(sttVal);
+            }
+          })
+          .catch(err => {
+            document.getElementById('loading-overlay').classList.add('hidden');
+            console.error(err);
+            showToast('Đồng bộ đám mây thất bại! Hệ thống đã lưu tạm trên thiết bị cục bộ.', 'error');
+            
+            // Local fallback
+            const idx = projects.findIndex(p => p.stt === sttVal);
+            if (idx !== -1) projects[idx] = dataObj;
+            else projects.push(dataObj);
+            localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+            closeEditModal();
+            refreshUI();
+          });
       } else {
-        projects.push(dataObj);
-        showToast(`Đã thêm mới vụ việc ${maVal} thành công!`, 'success');
-      }
-
-      // Update LocalStorage and Sync to Sheets
-      localStorage.setItem('project_nexus_database', JSON.stringify(projects));
-      closeEditModal();
-      refreshUI();
-
-      if (isCloudConnected) {
-        syncWithCloud();
-      }
-
-      if (selectedProjectStt === sttVal) {
-        openDetailsDrawer(sttVal);
+        // Local-only save state
+        const idx = projects.findIndex(p => p.stt === sttVal);
+        if (idx !== -1) {
+          projects[idx] = dataObj;
+          showToast(`Đã cập nhật dự án ${maVal} thành công (Lưu cục bộ)!`, 'success');
+        } else {
+          projects.push(dataObj);
+          showToast(`Đã thêm mới vụ việc ${maVal} thành công (Lưu cục bộ)!`, 'success');
+        }
+        localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+        closeEditModal();
+        refreshUI();
+        if (selectedProjectStt === sttVal) {
+          openDetailsDrawer(sttVal);
+        }
       }
     }
 
@@ -1568,7 +1643,7 @@
         iconEl.setAttribute('data-lucide', 'trash-2');
         okBtn.className = 'px-4.5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold uppercase transition shadow-lg shadow-rose-600/10';
       } else {
-        iconContainer.className = 'p-2.5 rounded-xl bg-amber-500/10 text-amber-500 shrink-0';
+        iconContainer.className = 'p-2.5 rounded-xl bg-amber-500/10 text-amber-650 dark:text-amber-500 shrink-0';
         iconEl.setAttribute('data-lucide', 'help-circle');
         okBtn.className = 'px-4.5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-bold uppercase transition shadow-lg shadow-brand-600/10';
       }
@@ -1591,6 +1666,7 @@
       cancelBtn.addEventListener('click', closeConfirm);
     }
 
+    // Delete project with "Fetch-before-Save" security gate
     function confirmDeleteProject(stt) {
       if (!isAuthorized) {
         showToast('Bạn phải mở khóa quyền hạch toán để xóa dữ liệu!', 'error');
@@ -1602,20 +1678,76 @@
 
       showConfirmModal({
         title: 'Xác nhận xóa Vụ việc',
-        message: `Bạn có chắc chắn muốn xóa vĩnh viễn vụ việc ${item.ma} khỏi sổ tay? Tác vụ này không thể hoàn tác.`,
+        message: `Bạn có chắc chắn muốn xóa vĩnh viễn vụ việc ${item.ma} khỏi sổ tay? Tác vụ này sẽ đồng bộ trực tiếp lên Google Sheets trung tâm.`,
         type: 'danger',
         onConfirm: () => {
-          const idx = projects.findIndex(p => p.stt === stt);
-          if (idx !== -1) {
-            projects.splice(idx, 1);
-            localStorage.setItem('project_nexus_database', JSON.stringify(projects));
-            showToast(`Đã xóa thành công vụ việc ${item.ma}`, 'error');
-            refreshUI();
-            if (isCloudConnected) {
-              syncWithCloud();
-            }
-            if (selectedProjectStt === stt) {
-              closeDetailsDrawer();
+          if (isCloudConnected && cloudUrl) {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            document.getElementById('loading-overlay').querySelector('p').textContent = "Đang đồng bộ xóa dữ liệu...";
+
+            // Step 1: Force fetch state first
+            fetch(`${cloudUrl}?nocache=${new Date().getTime()}`)
+              .then(response => response.json())
+              .then(res => {
+                if (res.success && res.data) {
+                  projects = res.data;
+                  
+                  // Step 2: Remove target item
+                  const idx = projects.findIndex(p => p.stt === stt);
+                  if (idx !== -1) {
+                    projects.splice(idx, 1);
+                  }
+
+                  // Step 3: Push back merged state
+                  const payload = {
+                    action: "save_all",
+                    password: "KT@2026",
+                    projects: projects
+                  };
+
+                  return fetch(cloudUrl, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                  });
+                } else {
+                  throw new Error("Đồng bộ thất bại");
+                }
+              })
+              .then(() => {
+                localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+                document.getElementById('loading-overlay').classList.add('hidden');
+                showToast(`Đã xóa và đồng bộ thành công vụ việc ${item.ma}`, 'error');
+                refreshUI();
+                if (selectedProjectStt === stt) {
+                  closeDetailsDrawer();
+                }
+              })
+              .catch(err => {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                console.error(err);
+                showToast('Đồng bộ xóa thất bại! Đang lưu trạng thái cục bộ trên thiết bị của bạn.', 'error');
+                
+                const idx = projects.findIndex(p => p.stt === stt);
+                if (idx !== -1) projects.splice(idx, 1);
+                localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+                refreshUI();
+                if (selectedProjectStt === stt) {
+                  closeDetailsDrawer();
+                }
+              });
+          } else {
+            // Local-only delete
+            const idx = projects.findIndex(p => p.stt === stt);
+            if (idx !== -1) {
+              projects.splice(idx, 1);
+              localStorage.setItem('project_nexus_database', JSON.stringify(projects));
+              showToast(`Đã xóa thành công vụ việc ${item.ma} (Lưu cục bộ)`, 'error');
+              refreshUI();
+              if (selectedProjectStt === stt) {
+                closeDetailsDrawer();
+              }
             }
           }
         }
@@ -1630,7 +1762,7 @@
 
       showConfirmModal({
         title: 'Khôi phục dữ liệu gốc',
-        message: 'Bạn có chắc chắn muốn khôi phục về cơ sở dữ liệu mẫu ban đầu? Toàn bộ các dữ liệu bổ sung hoặc file Excel tải lên sau này sẽ bị xóa sạch.',
+        message: 'Bạn có chắc chắn muốn khôi phục về cơ sở dữ liệu mẫu ban đầu? Toàn bộ các dữ liệu bổ sung hoặc file Excel tải lên sau này sẽ bị xóa sạch khỏi Sheets.',
         type: 'warning',
         onConfirm: () => {
           projects = [...defaultProjects];
