@@ -724,7 +724,7 @@
   <div id="confirm-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[110] flex items-center justify-center p-4 hidden">
     <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md shadow-2xl p-6 space-y-5">
       <div class="flex items-start space-x-3.5">
-        <div id="confirm-icon-container" class="p-2.5 rounded-xl bg-amber-500/10 text-amber-650 dark:text-amber-500 shrink-0">
+        <div id="confirm-icon-container" class="p-2.5 rounded-xl bg-amber-500/10 text-amber-655 dark:text-amber-500 shrink-0">
           <i id="confirm-icon" data-lucide="help-circle" class="w-6 h-6"></i>
         </div>
         <div>
@@ -754,7 +754,7 @@
   </div>
 
   <!-- App logic & initialization -->
-  <script { CSP_Guardrail_Safe }>
+  <script>
     // Embedded sample dataset parsed directly from the user's master Excel spreadsheet structure
     const defaultProjects = [
       { stt: "1", ma: "VV0001", ten: "Dịch vụ cung cấp cho JVPC", vietTat: "JVPC", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0001", tenKH: "Japan Vietnam Petroleum Company", pm: "Lê Văn Tiến", pgd: "Trần Hồng Nam", namBD: "2020", namKT: "2025", soHD: "HD-JVPC-01", loaiHD: "DV O&M", baoHanh: "1%", thoiHanBH: "12 tháng", batDauBH: "01/01/2026", ketThucBH: "01/01/2027", ros: "12%", location: "Việt Nam" },
@@ -832,10 +832,16 @@
       });
     }
 
+    // Dọn dẹp chuỗi an toàn - loại bỏ tuyệt đối ký tự ngắt dòng ẩn \r làm hỏng mã HTML onclick
+    function cleanString(str) {
+      if (str === undefined || str === null) return '';
+      return String(str).replace(/[\r\n]+/g, ' ').trim();
+    }
+
     // Helper functions for Date DD/MM/YYYY Parsing and Addition
     function parseDateDMY(str) {
       if (!str) return null;
-      const parts = str.split('/');
+      const parts = cleanString(str).split('/');
       if (parts.length !== 3) return null;
       const day = parseInt(parts[0], 10);
       const month = parseInt(parts[1], 10) - 1; // 0-based index
@@ -850,6 +856,35 @@
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
+    }
+
+    // Định dạng hiển thị ngày sạch, loại bỏ lỗi chuỗi Date JS thô
+    function formatDateDisplay(val) {
+      if (!val) return '---';
+      const cleanVal = cleanString(val);
+      if (cleanVal === '' || cleanVal === '---') return '---';
+      
+      // Nếu chuỗi chứa "GMT" hoặc là chuỗi ngày JS thô được nạp từ Excel
+      if (cleanVal.includes('GMT') || (isNaN(Number(cleanVal)) && !isNaN(Date.parse(cleanVal)))) {
+        const d = new Date(cleanVal);
+        if (!isNaN(d.getTime())) {
+          return formatDateDMY(d);
+        }
+      }
+      return cleanVal;
+    }
+
+    // Text Match Highlighting Engine
+    function highlight(text, searchTokens) {
+      if (!text) return '---';
+      let textStr = String(text);
+      if (!searchTokens || searchTokens.length === 0) return textStr;
+
+      const sortedTokens = [...new Set(searchTokens)].sort((a,b) => b.length - a.length);
+      const escaped = sortedTokens.map(tok => tok.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+      const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+
+      return textStr.replace(regex, '<mark class="bg-brand-500/30 text-brand-600 dark:text-emerald-300 font-semibold px-0.5 rounded border border-brand-500/25">$1</mark>');
     }
 
     // Register dynamic autocalculator listeners
@@ -904,7 +939,31 @@
         .then(res => {
           document.getElementById('loading-overlay').classList.add('hidden');
           if (res.success && res.data) {
-            projects = res.data;
+            // Clean dọn dẹp sạch sẽ toàn bộ mảng dữ liệu ngay khi tải về
+            projects = res.data.map(p => ({
+              stt: cleanString(p.stt),
+              ma: cleanString(p.ma),
+              ten: cleanString(p.ten),
+              vietTat: cleanString(p.vietTat),
+              kt: cleanString(p.kt),
+              chiPhi: cleanString(p.chiPhi),
+              doanhThu: cleanString(p.doanhThu),
+              costController: cleanString(p.costController),
+              maKH: cleanString(p.maKH),
+              tenKH: cleanString(p.tenKH),
+              pm: cleanString(p.pm),
+              pgd: cleanString(p.pgd),
+              namBD: cleanString(p.namBD),
+              namKT: cleanString(p.namKT),
+              soHD: cleanString(p.soHD),
+              loaiHD: cleanString(p.loaiHD),
+              baoHanh: cleanString(p.baoHanh),
+              thoiHanBH: cleanString(p.thoiHanBH),
+              batDauBH: cleanString(p.batDauBH),
+              ketThucBH: cleanString(p.ketThucBH),
+              ros: cleanString(p.ros),
+              location: cleanString(p.location)
+            }));
             showToast(`Đã kéo thành công ${projects.length} vụ việc từ Cloud!`, 'success');
             refreshUI();
           } else {
@@ -957,7 +1016,7 @@
       const importBtn = document.getElementById('import-btn-disabled');
 
       if (isAuthorized) {
-        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-455 hover:bg-emerald-500/20";
+        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/20";
         authBtn.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5"></i><span class="hidden sm:inline">Đã Mở Khóa</span><span class="sm:hidden">Sửa</span>`;
         addBtn.removeAttribute('disabled');
         importBtn.removeAttribute('disabled');
@@ -1048,13 +1107,15 @@
       });
 
       const ktContainer = document.getElementById('quick-filters-kt');
-      let ktHtml = `<button onclick="setKTFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedKTFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800'} transition">Tất cả</button>`;
+      let ktHtml = `<button onclick="setKTFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedKTFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-800'} transition">Tất cả</button>`;
       
       Object.keys(ktCounts).sort((a,b) => ktCounts[b] - ktCounts[a]).forEach(kt => {
         const isActive = selectedKTFilter === kt;
+        // Tránh lỗi nạp xâu chứa dấu nháy đơn
+        const escapedKT = kt.replace(/'/g, "\\'");
         ktHtml += `
           <button 
-            onclick="setKTFilter('${kt}')" 
+            onclick="setKTFilter('${escapedKT}')" 
             class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${isActive ? 'bg-indigo-600 text-white border-indigo-500/50' : 'bg-white dark:bg-black text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900'} transition flex items-center space-x-1"
           >
             <span>${kt}</span>
@@ -1071,7 +1132,7 @@
       });
 
       const accContainer = document.getElementById('quick-filters-accounts');
-      let accHtml = `<button onclick="setAccountFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedAccountFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750'} transition">Tất cả</button>`;
+      let accHtml = `<button onclick="setAccountFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedAccountFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-750'} transition">Tất cả</button>`;
       
       Object.keys(accountCounts).sort().forEach(acc => {
         const isActive = selectedAccountFilter === acc;
@@ -1091,6 +1152,18 @@
         `;
       });
       accContainer.innerHTML = accHtml;
+    }
+
+    function setKTFilter(kt) {
+      selectedKTFilter = kt;
+      renderFilters();
+      handleSearch();
+    }
+
+    function setAccountFilter(acc) {
+      selectedAccountFilter = acc;
+      renderFilters();
+      handleSearch();
     }
 
     function handleSearch() {
@@ -1140,18 +1213,6 @@
       selectedAccountFilter = null;
       refreshUI();
       showToast('Đã xóa tất cả bộ lọc tìm kiếm', 'info');
-    }
-
-    function highlight(text, searchTokens) {
-      if (!text) return '---';
-      let textStr = String(text);
-      if (!searchTokens || searchTokens.length === 0) return textStr;
-
-      const sortedTokens = [...new Set(searchTokens)].sort((a,b) => b.length - a.length);
-      const escaped = sortedTokens.map(tok => tok.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
-      const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
-
-      return textStr.replace(regex, '<mark class="bg-brand-500/30 text-brand-600 dark:text-emerald-300 font-semibold px-0.5 rounded border border-brand-500/25">$1</mark>');
     }
 
     function renderMainContent(data, tokens) {
@@ -1208,16 +1269,16 @@
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 font-semibold">${highlight(item.costController, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 font-mono">${highlight(item.maKH, tokens)}</td>
               <td class="px-3 py-3.5 text-xs text-slate-600 dark:text-slate-300 max-w-[200px] truncate" title="${item.tenKH}">${highlight(item.tenKH, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-750 dark:text-slate-400 font-semibold">${highlight(item.pm, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-450 font-medium">${highlight(item.pgd, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-755 dark:text-slate-400 font-semibold">${highlight(item.pm, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-455 font-medium">${highlight(item.pgd, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namBD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namKT, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-300 font-semibold max-w-[120px] truncate" title="${item.soHD}">${highlight(item.soHD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 truncate max-w-[120px]">${highlight(item.loaiHD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-emerald-600 dark:text-emerald-400 text-center font-bold">${highlight(item.baoHanh, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-semibold">${highlight(item.thoiHanBH, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${highlight(item.batDauBH, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${highlight(item.ketThucBH, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-semibold">${formatDateDisplay(item.thoiHanBH)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${formatDateDisplay(item.batDauBH)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${formatDateDisplay(item.ketThucBH)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-emerald-600 dark:text-emerald-400 text-center font-bold font-mono">${highlight(item.ros, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">${highlight(item.location, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-right sticky right-0 bg-white dark:bg-black group-hover:bg-slate-50 dark:group-hover:bg-slate-800 transition">
@@ -1372,8 +1433,8 @@
       document.getElementById('drawer-contract-no').textContent = item.soHD || 'Không có';
       document.getElementById('drawer-warranty-pct').textContent = item.baoHanh || '0%';
       document.getElementById('drawer-warranty-duration').textContent = item.thoiHanBH || 'Không bảo hành';
-      document.getElementById('drawer-warranty-start').textContent = item.batDauBH || '---';
-      document.getElementById('drawer-warranty-end').textContent = item.ketThucBH || '---';
+      document.getElementById('drawer-warranty-start').textContent = formatDateDisplay(item.batDauBH);
+      document.getElementById('drawer-warranty-end').textContent = formatDateDisplay(item.ketThucBH);
       document.getElementById('drawer-contract-type').textContent = item.loaiHD || 'Thông thường';
       
       document.getElementById('drawer-pm').textContent = item.pm || 'Chưa chỉ định';
@@ -1459,8 +1520,8 @@
         document.getElementById('edit-soHD').value = item.soHD || '';
         document.getElementById('edit-baoHanh').value = item.baoHanh || '';
         document.getElementById('edit-thoiHanBH').value = item.thoiHanBH || '';
-        document.getElementById('edit-batDauBH').value = item.batDauBH || '';
-        document.getElementById('edit-ketThucBH').value = item.ketThucBH || '';
+        document.getElementById('edit-batDauBH').value = formatDateDisplay(item.batDauBH);
+        document.getElementById('edit-ketThucBH').value = formatDateDisplay(item.ketThucBH);
         document.getElementById('edit-ros').value = item.ros || '';
         document.getElementById('edit-loaiHD').value = item.loaiHD || '';
       }
@@ -1479,28 +1540,28 @@
       const tenVal = document.getElementById('edit-ten').value.trim();
       
       const dataObj = {
-        stt: sttVal,
-        ma: maVal,
-        ten: tenVal,
-        vietTat: document.getElementById('edit-vietTat').value.trim(),
-        kt: document.getElementById('edit-kt').value.trim(),
-        chiPhi: document.getElementById('edit-chiPhi').value.trim(),
-        doanhThu: document.getElementById('edit-doanhThu').value.trim(),
-        costController: document.getElementById('edit-costController').value.trim(),
-        maKH: document.getElementById('edit-maKH').value.trim(),
-        tenKH: document.getElementById('edit-tenKH').value.trim(),
-        pm: document.getElementById('edit-pm').value.trim(),
-        pgd: document.getElementById('edit-pgd').value.trim(),
-        location: document.getElementById('edit-location').value.trim(),
-        namBD: document.getElementById('edit-namBD').value.trim(),
-        namKT: document.getElementById('edit-namKT').value.trim(),
-        soHD: document.getElementById('edit-soHD').value.trim(),
-        loaiHD: document.getElementById('edit-loaiHD').value.trim(),
-        baoHanh: document.getElementById('edit-baoHanh').value.trim(),
-        thoiHanBH: document.getElementById('edit-thoiHanBH').value.trim(),
-        batDauBH: document.getElementById('edit-batDauBH').value.trim(),
-        ketThucBH: document.getElementById('edit-ketThucBH').value.trim(),
-        ros: document.getElementById('edit-ros').value.trim()
+        stt: cleanString(sttVal),
+        ma: cleanString(maVal),
+        ten: cleanString(tenVal),
+        vietTat: cleanString(document.getElementById('edit-vietTat').value),
+        kt: cleanString(document.getElementById('edit-kt').value),
+        chiPhi: cleanString(document.getElementById('edit-chiPhi').value),
+        doanhThu: cleanString(document.getElementById('edit-doanhThu').value),
+        costController: cleanString(document.getElementById('edit-costController').value),
+        maKH: cleanString(document.getElementById('edit-maKH').value),
+        tenKH: cleanString(document.getElementById('edit-tenKH').value),
+        pm: cleanString(document.getElementById('edit-pm').value),
+        pgd: cleanString(document.getElementById('edit-pgd').value),
+        location: cleanString(document.getElementById('edit-location').value),
+        namBD: cleanString(document.getElementById('edit-namBD').value),
+        namKT: cleanString(document.getElementById('edit-namKT').value),
+        soHD: cleanString(document.getElementById('edit-soHD').value),
+        loaiHD: cleanString(document.getElementById('edit-loaiHD').value),
+        baoHanh: cleanString(document.getElementById('edit-baoHanh').value),
+        thoiHanBH: cleanString(document.getElementById('edit-thoiHanBH').value),
+        batDauBH: cleanString(document.getElementById('edit-batDauBH').value),
+        ketThucBH: cleanString(document.getElementById('edit-ketThucBH').value),
+        ros: cleanString(document.getElementById('edit-ros').value)
       };
 
       if (isCloudConnected && cloudUrl) {
@@ -1511,7 +1572,31 @@
           .then(response => response.json())
           .then(res => {
             if (res.success && res.data) {
-              projects = res.data;
+              projects = res.data.map(p => ({
+                stt: cleanString(p.stt),
+                ma: cleanString(p.ma),
+                ten: cleanString(p.ten),
+                vietTat: cleanString(p.vietTat),
+                kt: cleanString(p.kt),
+                chiPhi: cleanString(p.chiPhi),
+                doanhThu: cleanString(p.doanhThu),
+                costController: cleanString(p.costController),
+                maKH: cleanString(p.maKH),
+                tenKH: cleanString(p.tenKH),
+                pm: cleanString(p.pm),
+                pgd: cleanString(p.pgd),
+                namBD: cleanString(p.namBD),
+                namKT: cleanString(p.namKT),
+                soHD: cleanString(p.soHD),
+                loaiHD: cleanString(p.loaiHD),
+                baoHanh: cleanString(p.baoHanh),
+                thoiHanBH: cleanString(p.thoiHanBH),
+                batDauBH: cleanString(p.batDauBH),
+                ketThucBH: cleanString(p.ketThucBH),
+                ros: cleanString(p.ros),
+                location: cleanString(p.location)
+              }));
+              
               const idx = projects.findIndex(p => p.stt === sttVal);
               if (idx !== -1) {
                 projects[idx] = dataObj;
@@ -1592,7 +1677,7 @@
         iconEl.setAttribute('data-lucide', 'trash-2');
         okBtn.className = 'px-4.5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold uppercase transition shadow-lg shadow-rose-600/10';
       } else {
-        iconContainer.className = 'p-2.5 rounded-xl bg-amber-500/10 text-amber-650 dark:text-amber-500 shrink-0';
+        iconContainer.className = 'p-2.5 rounded-xl bg-amber-500/10 text-amber-655 dark:text-amber-500 shrink-0';
         iconEl.setAttribute('data-lucide', 'help-circle');
         okBtn.className = 'px-4.5 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-lg text-xs font-bold uppercase transition shadow-lg shadow-brand-600/10';
       }
@@ -1637,7 +1722,31 @@
               .then(response => response.json())
               .then(res => {
                 if (res.success && res.data) {
-                  projects = res.data;
+                  projects = res.data.map(p => ({
+                    stt: cleanString(p.stt),
+                    ma: cleanString(p.ma),
+                    ten: cleanString(p.ten),
+                    vietTat: cleanString(p.vietTat),
+                    kt: cleanString(p.kt),
+                    chiPhi: cleanString(p.chiPhi),
+                    doanhThu: cleanString(p.doanhThu),
+                    costController: cleanString(p.costController),
+                    maKH: cleanString(p.maKH),
+                    tenKH: cleanString(p.tenKH),
+                    pm: cleanString(p.pm),
+                    pgd: cleanString(p.pgd),
+                    namBD: cleanString(p.namBD),
+                    namKT: cleanString(p.namKT),
+                    soHD: cleanString(p.soHD),
+                    loaiHD: cleanString(p.loaiHD),
+                    baoHanh: cleanString(p.baoHanh),
+                    thoiHanBH: cleanString(p.thoiHanBH),
+                    batDauBH: cleanString(p.batDauBH),
+                    ketThucBH: cleanString(p.ketThucBH),
+                    ros: cleanString(p.ros),
+                    location: cleanString(p.location)
+                  }));
+                  
                   const idx = projects.findIndex(p => p.stt === stt);
                   if (idx !== -1) {
                     projects.splice(idx, 1);
@@ -1878,14 +1987,18 @@
       keyMap.tenKH = matchKey('tên kh', 9);
       keyMap.pm = matchKey('pm', 10);
       keyMap.pgd = matchKey('pgd', 11);
+      
+      // Sắp xếp thứ tự ưu tiên quét từ khóa tránh việc quét Năm bắt đầu đè lên Ngày bắt đầu bảo hành
+      keyMap.batDauBH = matchKey('bắt đầu bh', 18);
+      keyMap.ketThucBH = matchKey('kết thúc bh', 19);
+      keyMap.thoiHanBH = matchKey('thời hạn bh', 17);
+      
       keyMap.namBD = matchKey('bắt đầu', 12);
       keyMap.namKT = matchKey('kết thúc', 13);
+      
       keyMap.soHD = matchKey('hợp đồng', 14);
       keyMap.loaiHD = matchKey('loại hợp đồng', 15);
       keyMap.baoHanh = matchKey('bảo hành', 16);
-      keyMap.thoiHanBH = matchKey('thời hạn bh', 17);
-      keyMap.batDauBH = matchKey('bắt đầu bh', 18);
-      keyMap.ketThucBH = matchKey('kết thúc bh', 19);
       keyMap.ros = matchKey('ros', 20);
       keyMap.location = matchKey('location', 21);
 
@@ -1899,28 +2012,28 @@
         
         if (codeVal && (codeVal.toUpperCase().startsWith('VV') || codeVal.toUpperCase().startsWith('DA') || nameVal)) {
           parsedProjects.push({
-            stt: String(row[keyMap.stt] || parsedProjects.length + 1).trim(),
-            ma: codeVal,
-            ten: nameVal || 'Dự án chưa phân loại',
-            vietTat: String(row[keyMap.vietTat] || '').trim(),
-            kt: String(row[keyMap.kt] || '').trim(),
-            chiPhi: String(row[keyMap.chiPhi] || '').trim(),
-            doanhThu: String(row[keyMap.doanhThu] || '').trim(),
-            costController: String(row[keyMap.costController] || '').trim(),
-            maKH: String(row[keyMap.maKH] || '').trim(),
-            tenKH: String(row[keyMap.tenKH] || '').trim(),
-            pm: String(row[keyMap.pm] || '').trim(),
-            pgd: String(row[keyMap.pgd] || '').trim(),
-            namBD: String(row[keyMap.namBD] || '').trim(),
-            namKT: String(row[keyMap.namKT] || '').trim(),
-            soHD: String(row[keyMap.soHD] || '').trim(),
-            loaiHD: String(row[keyMap.loaiHD] || '').trim(),
-            baoHanh: String(row[keyMap.baoHanh] || '').trim(),
-            thoiHanBH: String(row[keyMap.thoiHanBH] || '').trim(),
-            batDauBH: String(row[keyMap.batDauBH] || '').trim(),
-            ketThucBH: String(row[keyMap.ketThucBH] || '').trim(),
-            ros: String(row[keyMap.ros] || '').trim(),
-            location: String(row[keyMap.location] || '').trim()
+            stt: cleanString(row[keyMap.stt] || parsedProjects.length + 1),
+            ma: cleanString(codeVal),
+            ten: cleanString(nameVal || 'Dự án chưa phân loại'),
+            vietTat: cleanString(row[keyMap.vietTat]),
+            kt: cleanString(row[keyMap.kt]),
+            chiPhi: cleanString(row[keyMap.chiPhi]),
+            doanhThu: cleanString(row[keyMap.doanhThu]),
+            costController: cleanString(row[keyMap.costController]),
+            maKH: cleanString(row[keyMap.maKH]),
+            tenKH: cleanString(row[keyMap.tenKH]),
+            pm: cleanString(row[keyMap.pm]),
+            pgd: cleanString(row[keyMap.pgd]),
+            namBD: cleanString(row[keyMap.namBD]),
+            namKT: cleanString(row[keyMap.namKT]),
+            soHD: cleanString(row[keyMap.soHD]),
+            loaiHD: cleanString(row[keyMap.loaiHD]),
+            baoHanh: cleanString(row[keyMap.baoHanh]),
+            thoiHanBH: cleanString(row[keyMap.thoiHanBH]),
+            batDauBH: cleanString(row[keyMap.batDauBH]),
+            ketThucBH: cleanString(row[keyMap.ketThucBH]),
+            ros: cleanString(row[keyMap.ros]),
+            location: cleanString(row[keyMap.location])
           });
         }
       }
