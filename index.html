@@ -2,7 +2,7 @@
 <html lang="vi" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SỔ TAY VỤ VIỆC DỰ ÁN - PROJECT JOB COSTING MANAGER</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -93,9 +93,10 @@
   <!-- Header Section -->
   <header class="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-black/60 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
+      <!-- Title & Logo container optimized for dynamic safe scaling to prevent mobile wrapping -->
+      <div class="flex items-center space-x-1.5 sm:space-x-3 min-w-0 flex-1 mr-2">
         <!-- Logo PTSC POS chính hãng có bọc khung Glassmorphism -->
-        <div class="p-1 bg-white dark:bg-slate-900 rounded-xl shadow-md border border-slate-200 dark:border-slate-800 flex items-center justify-center w-14 h-12 overflow-hidden shrink-0">
+        <div class="p-0.5 sm:p-1 bg-white dark:bg-slate-900 rounded-lg sm:rounded-xl shadow-md border border-slate-200 dark:border-slate-800 flex items-center justify-center w-10 h-8 sm:w-14 sm:h-12 overflow-hidden shrink-0">
           <img 
             src="https://pos.ptsc.com.vn/wp-content/themes/yootheme/cache/32/Logo-copy-2-32326487.webp" 
             alt="PTSC POS Logo" 
@@ -103,22 +104,22 @@
             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-[10px] font-bold text-emerald-600 dark:text-emerald-400\'>PTSC</div>';"
           >
         </div>
-        <div>
-          <h1 class="font-extrabold text-sm sm:text-lg tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-600 dark:from-white dark:via-slate-200 dark:to-brand-500 bg-clip-text text-transparent uppercase">
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-[11px] min-[380px]:text-xs sm:text-lg tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-600 dark:from-white dark:via-slate-200 dark:to-brand-500 bg-clip-text text-transparent uppercase truncate">
             Sổ Tay Vụ Việc Dự Án
           </h1>
-          <p class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">PROJECT JOB COSTING MANAGER</p>
+          <p class="text-[8px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider truncate">PROJECT JOB COSTING MANAGER</p>
         </div>
       </div>
 
       <!-- Theme Switch, Cloud Sync Status & Actions -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
+      <div class="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
         
         <!-- Cloud Integration Button Indicators (Click to pull fresh data immediately!) -->
         <button 
           id="cloud-status-btn"
           onclick="handleCloudBtnClick()"
-          class="flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
+          class="flex items-center space-x-1 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-[10px] sm:text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
           title="Bấm để tải lại dữ liệu mới nhất từ đám mây Google Sheets"
         >
           <i data-lucide="cloud-off" class="w-3.5 h-3.5"></i>
@@ -129,7 +130,7 @@
         <button 
           id="auth-status-btn"
           onclick="triggerAuthAction()"
-          class="flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20"
+          class="flex items-center space-x-1 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-[10px] sm:text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-50/20"
         >
           <i data-lucide="lock" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">Mở khóa Chỉnh sửa</span>
@@ -138,19 +139,19 @@
         <!-- Light/Dark Mode Switch -->
         <button 
           onclick="toggleTheme()" 
-          class="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 transition"
+          class="p-1.5 sm:p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 transition"
           title="Chuyển chế độ Sáng / Tối"
         >
-          <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-          <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+          <i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-3.5 h-3.5 block dark:hidden"></i>
         </button>
 
-        <button id="import-btn-disabled" disabled onclick="toggleImportModal()" class="disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 transition duration-200 text-xs sm:text-sm font-semibold">
+        <button id="import-btn-disabled" disabled onclick="toggleImportModal()" class="disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-800 transition duration-200 text-xs font-semibold">
           <i data-lucide="file-spreadsheet" class="w-4 h-4 text-brand-500"></i>
           <span class="hidden md:inline">Nhập Excel</span>
         </button>
         
-        <button id="add-btn-disabled" disabled onclick="openEditModal(null)" class="disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1.5 bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-500 hover:to-emerald-500 text-white px-3.5 py-2 rounded-xl shadow-lg shadow-brand-600/10 transition duration-200 text-xs sm:text-sm font-semibold">
+        <button id="add-btn-disabled" disabled onclick="openEditModal(null)" class="disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1 bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-500 hover:to-emerald-500 text-white px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow-lg shadow-brand-600/10 transition duration-200 text-xs font-semibold">
           <i data-lucide="plus" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Thêm mới</span>
         </button>
@@ -305,10 +306,10 @@
 
   </main>
 
-  <!-- Side Drawer for Project Details -->
-  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex-col">
+  <!-- Side Drawer for Project Details (Fully optimized scroll container for iOS Safari and other browsers) -->
+  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl h-full h-[100dvh] bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex flex-col overflow-hidden">
     <!-- Drawer Header -->
-    <div class="p-6 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between bg-slate-50 dark:bg-black/40">
+    <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between bg-slate-50 dark:bg-black/40 shrink-0">
       <div class="flex items-center space-x-2.5">
         <span class="px-2.5 py-1 bg-brand-500/10 border border-brand-500/20 text-brand-600 dark:text-brand-400 rounded-lg text-xs font-bold tracking-wider uppercase" id="drawer-header-code">VV0000</span>
         <h2 class="text-lg font-bold text-slate-900 dark:text-white">Chi tiết Vụ việc</h2>
@@ -323,8 +324,8 @@
       </div>
     </div>
 
-    <!-- Drawer Content (Scrollable) -->
-    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+    <!-- Drawer Content (With strict min-h-0 and overflow-y-auto to guarantee Safari dynamic touch scrollability) -->
+    <div class="flex-1 overflow-y-auto min-h-0 p-4 sm:p-6 space-y-6" style="-webkit-overflow-scrolling: touch;">
       
       <!-- General Info Segment -->
       <div class="space-y-4">
@@ -454,7 +455,7 @@
     </div>
 
     <!-- Drawer Footer -->
-    <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/60 flex items-center justify-between">
+    <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/60 flex items-center justify-between shrink-0">
       <button 
         onclick="copyQuickSummary()" 
         class="flex-1 mr-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center space-x-2 text-xs font-bold uppercase tracking-wider transition"
@@ -485,7 +486,7 @@
         </button>
       </div>
 
-      <!-- Form Body (Fluid stack for Mobile) -->
+      <!-- Form Body -->
       <form id="edit-form" class="flex-1 overflow-y-auto p-6 space-y-4 text-sm text-slate-700 dark:text-slate-300" onsubmit="saveProject(event)">
         <input type="hidden" id="edit-stt">
         
@@ -743,8 +744,8 @@
       { stt: "238", ma: "VV0238", ten: "Cung cấp dịch vụ cho TCT Phân bón hóa chất dầu khí VN", vietTat: "PVFCCo Service", kt: "Tiên", chiPhi: "6313", doanhThu: "51133", costController: "Vũ Hải Đăng", maKH: "KH4209", tenKH: "Tổng Công Ty Phân Bón và Hóa Chất Dầu Khí - CTCP", pm: "Trần Minh Quân", pgd: "Trần Hồng Nam", namBD: "2023", namKT: "2024", soHD: "HD-PVFCC-238", loaiHD: "Cung cấp dịch vụ", baoHanh: "", ros: "8%", location: "Phú Mỹ" },
       { stt: "239", ma: "VV0239", ten: "Cung cấp dịch vụ cho KH Chartering Company (Singapore) thuê sà lan Transporter", vietTat: "Chartering SG", kt: "Huế", chiPhi: "6316", doanhThu: "51136", costController: "Trần Thế Hải", maKH: "KH0239", tenKH: "Chartering Company (Singapore) Pte Ltd", pm: "Lâm Quang Huy", pgd: "Lê Quang Hiển", namBD: "2023", namKT: "2025", soHD: "HD-TRANS-239", loaiHD: "Cho thuê thiết bị", baoHanh: "", ros: "10%", location: "Quốc tế" },
       { stt: "240", ma: "VV0240", ten: "Cung cấp nhóm nhân sự OM LDV cho TCT", vietTat: "OM LDV Personnel", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Hoàng Quốc Việt", pgd: "Trần Hồng Nam", namBD: "2024", namKT: "2026", soHD: "HD-OMLDV-240", loaiHD: "Cung ứng nhân sự", baoHanh: "5%", ros: "11%", location: "Vũng Tàu" },
-      { stt: "241", ma: "VV0241", ten: "DA Lac Da Vang FPSO", vietTat: "LDV FPSO", kt: "Thùy Nhung", chiPhi: "6316", doanhThu: "51136", costController: "Vũ Hải Đăng", maKH: "KH0241", tenKH: "Murphy Oil Vietnam", pm: "Trần Hoàng Nam", pgd: "Nguyễn Anh Thư", namBD: "2024", namKT: "2028", soHD: "HD-LDV-FPSO", loaiHD: "EPCI", baoHanh: "10%", ros: "16%", location: "Bồn trũng Cửu Long" },
-      { stt: "242", ma: "VV0242", ten: "Cung cấp nhân sự cho Dự án LSPET - TCT PTSC", vietTat: "LSPET PTSC", kt: "Tú", chiPhi: "6311", doanhThu: "51131", costController: "Nguyễn Văn Toàn", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Trần Văn Bình", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2025", soHD: "HD-LSPET-242", loaiHD: "Cung cấp nhân sự", baoHanh: "", ros: "6%", location: "Long Sơn" }
+      { stt: "241", ma: "VV0241", ten: "DA Lac Da Vang FPSO", vietTat: "LDV FPSO", kt: "Thùy Nhung", chiPhi: "6316", doanhThu: "51136", costController: "Vũ Hải Đăng", maKH: "KH0241", tenKH: "Murphy Oil Vietnam", pm: "Trần Hoàng Nam", pgd: "Nguyễn Anh Thư", namBD: "2024", namKT: "2028", soHD: "HD-LDV-FPSO", loaiHD: "EPCI", location: "Bồn trũng Cửu Long" },
+      { stt: "242", ma: "VV0242", ten: "Cung cấp nhân sự cho Dự án LSPET - TCT PTSC", vietTat: "LSPET PTSC", kt: "Tú", chiPhi: "6311", doanhThu: "51131", costController: "Nguyễn Văn Toàn", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Trần Văn Bình", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2025", soHD: "HD-LSPET-242", loaiHD: "Cung cấp nhân sự", location: "Long Sơn" }
     ];
 
     // ĐƯỜNG DẪN APPS SCRIPT LIÊN KẾT ĐÁM MÂY ĐƯỢC CHÈN SẴN MẶC ĐỊNH
@@ -914,7 +915,7 @@
         addBtn.removeAttribute('disabled');
         importBtn.removeAttribute('disabled');
       } else {
-        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-450 hover:bg-rose-500/20";
+        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-450 hover:bg-rose-50/20";
         authBtn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i><span class="hidden sm:inline">Mở khóa Chỉnh sửa</span><span class="sm:hidden">Khóa</span>`;
         addBtn.setAttribute('disabled', 'true');
         importBtn.setAttribute('disabled', 'true');
