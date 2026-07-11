@@ -1431,7 +1431,13 @@
       document.getElementById('drawer-customer-code').textContent = item.maKH || '---';
       document.getElementById('drawer-customer-name').textContent = item.tenKH || 'Chưa liên kết';
       document.getElementById('drawer-contract-no').textContent = item.soHD || 'Không có';
-      document.getElementById('drawer-warranty').textContent = item.baoHanh || '0%';
+      
+      // Sửa đổi ánh xạ chuẩn xác đến 4 cột bảo hành mới, loại bỏ phần tử 'drawer-warranty' bị lỗi null
+      document.getElementById('drawer-warranty-pct').textContent = item.baoHanh || '0%';
+      document.getElementById('drawer-warranty-duration').textContent = item.thoiHanBH || '---';
+      document.getElementById('drawer-warranty-start').textContent = formatDateDisplay(item.batDauBH);
+      document.getElementById('drawer-warranty-end').textContent = formatDateDisplay(item.ketThucBH);
+      
       document.getElementById('drawer-contract-type').textContent = item.loaiHD || 'Thông thường';
       
       document.getElementById('drawer-pm').textContent = item.pm || 'Chưa chỉ định';
