@@ -33,7 +33,7 @@
               900: '#064e3b',
             },
             slate: {
-              950: '#030408', /* Chuyển đổi thành đen tuyệt đối Obsidian */
+              950: '#030408', /* Đen Obsidian */
             }
           }
         }
@@ -42,21 +42,18 @@
   </script>
   
   <style>
-    /* Premium background mesh gradients */
     .bg-light-mesh {
       background-color: #f8fafc;
       background-image: 
         radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
     }
-    /* Sửa lỗi biên dịch Tailwind: Ép nền đen Obsidian tuyệt đối khi kích hoạt class .dark */
     .dark body, .dark {
-      background-color: #030408 !important; /* Đen tuyệt đối Obsidian */
+      background-color: #030408 !important;
       background-image: 
         radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 40%),
         radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 40%) !important;
     }
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -93,9 +90,8 @@
   <!-- Header Section -->
   <header class="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-black/60 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Title & Logo container optimized for dynamic safe scaling to prevent mobile wrapping -->
+      <!-- Title & Logo container optimized for dynamic safe scaling -->
       <div class="flex items-center space-x-1.5 sm:space-x-3 min-w-0 flex-1 mr-2">
-        <!-- Logo PTSC POS chính hãng có bọc khung Glassmorphism -->
         <div class="p-0.5 sm:p-1 bg-white dark:bg-slate-900 rounded-lg sm:rounded-xl shadow-md border border-slate-200 dark:border-slate-800 flex items-center justify-center w-10 h-8 sm:w-14 sm:h-12 overflow-hidden shrink-0">
           <img 
             src="https://pos.ptsc.com.vn/wp-content/themes/yootheme/cache/32/Logo-copy-2-32326487.webp" 
@@ -114,19 +110,15 @@
 
       <!-- Theme Switch, Cloud Sync Status & Actions -->
       <div class="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
-        
-        <!-- Cloud Integration Button Indicators (Click to pull fresh data immediately!) -->
         <button 
           id="cloud-status-btn"
           onclick="handleCloudBtnClick()"
           class="flex items-center space-x-1 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-[10px] sm:text-xs font-bold transition-all duration-300 bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20"
-          title="Bấm để tải lại dữ liệu mới nhất từ đám mây Google Sheets"
         >
           <i data-lucide="cloud-off" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline">Chưa kết nối Cloud</span>
         </button>
 
-        <!-- Lock/Unlock Authentication Trigger -->
         <button 
           id="auth-status-btn"
           onclick="triggerAuthAction()"
@@ -136,11 +128,9 @@
           <span class="hidden sm:inline">Mở khóa Chỉnh sửa</span>
         </button>
 
-        <!-- Light/Dark Mode Switch -->
         <button 
           onclick="toggleTheme()" 
           class="p-1.5 sm:p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 transition"
-          title="Chuyển chế độ Sáng / Tối"
         >
           <i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block"></i>
           <i data-lucide="moon" class="w-3.5 h-3.5 block dark:hidden"></i>
@@ -163,8 +153,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
     
     <!-- Top Dashboard Stats Card Panel -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <!-- Total Projects -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white/60 dark:bg-black/40 border border-slate-200 dark:border-slate-800/80 backdrop-blur-xl rounded-2xl p-4 flex items-center justify-between shadow-sm">
         <div>
           <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tổng số vụ việc</p>
@@ -178,36 +167,33 @@
         </div>
       </div>
 
-      <!-- Total Accountants -->
       <div class="bg-white/60 dark:bg-black/40 border border-slate-200 dark:border-slate-800/80 backdrop-blur-xl rounded-2xl p-4 flex items-center justify-between shadow-sm">
         <div>
           <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Kế toán phụ trách</p>
           <h3 class="text-2xl font-bold mt-1 text-slate-950 dark:text-white" id="stat-total-kt">0</h3>
-          <p class="text-[10px] text-indigo-500 dark:text-indigo-400 mt-1">Đầu mối phụ trách tài chính</p>
+          <p class="text-[10px] text-indigo-500 dark:text-indigo-400 mt-1">Đầu mối hạch toán vụ việc</p>
         </div>
         <div class="p-3 bg-indigo-500/10 rounded-xl text-indigo-500">
           <i data-lucide="users" class="w-6 h-6"></i>
         </div>
       </div>
 
-      <!-- Cost Accounts -->
       <div class="bg-white/60 dark:bg-black/40 border border-slate-200 dark:border-slate-800/80 backdrop-blur-xl rounded-2xl p-4 flex items-center justify-between shadow-sm">
         <div>
           <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tài khoản Chi Phí (63xx)</p>
           <h3 class="text-2xl font-bold mt-1 text-slate-950 dark:text-white" id="stat-total-costs">0</h3>
-          <p class="text-[10px] text-rose-500 dark:text-rose-400 mt-1">Tài khoản chi tiết vụ việc</p>
+          <p class="text-[10px] text-rose-500 dark:text-rose-400 mt-1">Tài khoản chi tiết</p>
         </div>
         <div class="p-3 bg-rose-500/10 rounded-xl text-rose-500">
           <i data-lucide="pie-chart" class="w-6 h-6"></i>
         </div>
       </div>
 
-      <!-- Revenue Accounts -->
       <div class="bg-white/60 dark:bg-black/40 border border-slate-200 dark:border-slate-800/80 backdrop-blur-xl rounded-2xl p-4 flex items-center justify-between shadow-sm">
         <div>
           <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tài khoản Doanh Thu (51xx)</p>
           <h3 class="text-2xl font-bold mt-1 text-slate-950 dark:text-white" id="stat-total-revenues">0</h3>
-          <p class="text-[10px] text-amber-600 dark:text-amber-400 mt-1">Tài khoản doanh thu vụ việc</p>
+          <p class="text-[10px] text-amber-600 dark:text-amber-400 mt-1">Tài khoản thu chi</p>
         </div>
         <div class="p-3 bg-amber-500/10 rounded-xl text-amber-500">
           <i data-lucide="line-chart" class="w-6 h-6"></i>
@@ -217,7 +203,6 @@
 
     <!-- Search & Filters Panel -->
     <div class="bg-white dark:bg-black/60 border border-slate-200 dark:border-slate-800/80 backdrop-blur-xl rounded-2xl p-6 mb-6 shadow-md dark:shadow-xl">
-      <!-- Search Box Section -->
       <div class="relative mb-5">
         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
           <i data-lucide="search" class="h-5 w-5 text-slate-400"></i>
@@ -236,33 +221,26 @@
           <button 
             onclick="clearSearch()"
             class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white transition"
-            title="Xóa tìm kiếm"
           >
             <i data-lucide="x-circle" class="w-5 h-5"></i>
           </button>
         </div>
       </div>
 
-      <!-- Quick Filter Chips & Metadata Panel -->
       <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 border-t border-slate-100 dark:border-slate-800/60 pt-4">
         <span class="flex items-center space-x-1.5 font-semibold text-slate-700 dark:text-slate-300">
           <i data-lucide="sliders-horizontal" class="w-4 h-4 text-brand-500"></i>
           <span>Lọc nhanh KT:</span>
         </span>
-        <div id="quick-filters-kt" class="flex flex-wrap gap-2">
-          <!-- Dynamically generated KT badges -->
-        </div>
+        <div id="quick-filters-kt" class="flex flex-wrap gap-2"></div>
       </div>
 
-      <!-- Quick Account Filters -->
       <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 mt-3">
         <span class="flex items-center space-x-1.5 font-semibold text-slate-700 dark:text-slate-300">
           <i data-lucide="wallet" class="w-4 h-4 text-indigo-400"></i>
           <span>Lọc tài khoản:</span>
         </span>
-        <div id="quick-filters-accounts" class="flex flex-wrap gap-2">
-          <!-- Dynamically generated CP / DT badges -->
-        </div>
+        <div id="quick-filters-accounts" class="flex flex-wrap gap-2"></div>
       </div>
     </div>
 
@@ -276,7 +254,6 @@
           id="layout-btn-table" 
           onclick="switchLayout('table')" 
           class="p-2 rounded-lg bg-slate-250 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700"
-          title="Chế độ bảng chi tiết"
         >
           <i data-lucide="table" class="w-4 h-4"></i>
         </button>
@@ -284,7 +261,6 @@
           id="layout-btn-grid" 
           onclick="switchLayout('grid')" 
           class="p-2 rounded-lg bg-white dark:bg-black text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900"
-          title="Chế độ thẻ trực quan"
         >
           <i data-lucide="layout-grid" class="w-4 h-4"></i>
         </button>
@@ -300,14 +276,12 @@
     </div>
 
     <!-- Content Area -->
-    <div id="content-container" class="w-full">
-      <!-- Data content tables / grid card layout will be loaded here -->
-    </div>
+    <div id="content-container" class="w-full"></div>
 
   </main>
 
-  <!-- Side Drawer for Project Details (Fully optimized scroll container for iOS Safari and other browsers) -->
-  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl h-full h-[100dvh] bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex flex-col overflow-hidden">
+  <!-- Side Drawer for Project Details (Optimized Touch Scroll) -->
+  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl h-full h-[100dvh] bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex-col overflow-hidden">
     <!-- Drawer Header -->
     <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between bg-slate-50 dark:bg-black/40 shrink-0">
       <div class="flex items-center space-x-2.5">
@@ -315,7 +289,7 @@
         <h2 class="text-lg font-bold text-slate-900 dark:text-white">Chi tiết Vụ việc</h2>
       </div>
       <div class="flex items-center space-x-2">
-        <button id="drawer-edit-btn" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-slate-500 hover:text-brand-500 transition" title="Chỉnh sửa">
+        <button id="drawer-edit-btn" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-slate-500 hover:text-brand-500 transition">
           <i data-lucide="edit-3" class="w-5 h-5"></i>
         </button>
         <button onclick="closeDetailsDrawer()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl text-slate-500 hover:text-white transition">
@@ -324,7 +298,7 @@
       </div>
     </div>
 
-    <!-- Drawer Content (With strict min-h-0 and overflow-y-auto to guarantee Safari dynamic touch scrollability) -->
+    <!-- Drawer Content (With strict touch-scrolling layout) -->
     <div class="flex-1 overflow-y-auto min-h-0 p-4 sm:p-6 space-y-6" style="-webkit-overflow-scrolling: touch;">
       
       <!-- General Info Segment -->
@@ -354,7 +328,7 @@
         </div>
       </div>
 
-      <!-- Accounting & Financial segment (Responsive stack) -->
+      <!-- Financial Segment -->
       <div class="bg-slate-50 dark:bg-black/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 space-y-4">
         <div class="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-widest border-b border-slate-200 dark:border-slate-800/60 pb-1.5">
           <i data-lucide="banknote" class="w-4 h-4"></i>
@@ -376,7 +350,7 @@
         </div>
       </div>
 
-      <!-- Customer & Contract segment -->
+      <!-- Customer & Contract -->
       <div class="space-y-4">
         <div class="flex items-center space-x-2 text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest border-b border-slate-200 dark:border-slate-800 pb-1.5">
           <i data-lucide="briefcase" class="w-4 h-4"></i>
@@ -396,18 +370,40 @@
               <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5 break-all" id="drawer-contract-no">---</div>
             </div>
             <div>
-              <label class="text-[10px] text-slate-400 uppercase font-semibold">% Bảo hành</label>
-              <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5" id="drawer-warranty">---</div>
+              <label class="text-[10px] text-slate-400 uppercase font-semibold">Loại hợp đồng</label>
+              <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5" id="drawer-contract-type">---</div>
             </div>
-          </div>
-          <div>
-            <label class="text-[10px] text-slate-400 uppercase font-semibold">Loại hợp đồng DV</label>
-            <div class="text-slate-700 dark:text-slate-200 font-medium mt-0.5" id="drawer-contract-type">---</div>
           </div>
         </div>
       </div>
 
-      <!-- Management & Timeline segment -->
+      <!-- Warranty Segment -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-2 text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-widest border-b border-slate-200 dark:border-slate-800 pb-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Quản lý bảo hành</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase font-semibold">% Bảo hành</label>
+            <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5" id="drawer-warranty-pct">---</div>
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase font-semibold">Thời hạn BH</label>
+            <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5" id="drawer-warranty-duration">---</div>
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase font-semibold">Bắt đầu BH</label>
+            <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5 font-mono" id="drawer-warranty-start">---</div>
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 uppercase font-semibold">Kết thúc BH</label>
+            <div class="text-slate-800 dark:text-slate-200 font-semibold mt-0.5 font-mono" id="drawer-warranty-end">---</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Management & Timeline -->
       <div class="space-y-4">
         <div class="flex items-center space-x-2 text-amber-600 dark:text-amber-500 font-bold text-xs uppercase tracking-widest border-b border-slate-200 dark:border-slate-800 pb-1.5">
           <i data-lucide="calendar" class="w-4 h-4"></i>
@@ -431,7 +427,7 @@
           <div>
             <label class="text-[10px] text-slate-400 uppercase font-semibold">Cost Controller</label>
             <div class="text-slate-900 dark:text-white font-semibold mt-0.5 flex items-center">
-              <i data-lucide="shield-check" class="w-4 h-4 mr-1.5 text-slate-400"></i>
+              <i data-lucide="shield-alert" class="w-4 h-4 mr-1.5 text-slate-400"></i>
               <span id="drawer-cost-controller">---</span>
             </div>
           </div>
@@ -458,10 +454,10 @@
     <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/60 flex items-center justify-between shrink-0">
       <button 
         onclick="copyQuickSummary()" 
-        class="flex-1 mr-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center space-x-2 text-xs font-bold uppercase tracking-wider transition"
+        class="flex-1 mr-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-slate-950 dark:hover:text-white px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-center space-x-2 text-xs font-bold uppercase tracking-wider transition"
       >
         <i data-lucide="copy" class="w-4 h-4"></i>
-        <span>Sao chép nhanh</span>
+        <span>Copy tóm tắt</span>
       </button>
       <button 
         onclick="closeDetailsDrawer()" 
@@ -563,7 +559,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <!-- Năm bắt đầu -->
           <div>
             <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Năm bắt đầu</label>
@@ -579,22 +575,46 @@
             <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Số Hợp đồng</label>
             <input type="text" id="edit-soHD" class="w-full bg-slate-55 dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
           </div>
-          <!-- % Bảo hành -->
+          <!-- Loại Hợp đồng DV -->
           <div>
-            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">% Bảo hành</label>
-            <input type="text" id="edit-baoHanh" class="w-full bg-slate-55 dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
+            <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Loại Hợp đồng DV</label>
+            <input type="text" id="edit-loaiHD" class="w-full bg-slate-55 dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
           </div>
+        </div>
+
+        <!-- BẢO HÀNH SEGMENT (Tích hợp Auto-calculating) -->
+        <div class="bg-slate-50 dark:bg-black/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800/80 space-y-3">
+          <div class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">Thông tin Bảo Hành (Tự động hạch toán)</div>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <!-- % Bảo hành -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">% Bảo hành</label>
+              <input type="text" id="edit-baoHanh" placeholder="Ví dụ: 1%" class="w-full bg-white dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-1.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+            <!-- Thời hạn bảo hành -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">Thời hạn BH (tháng)</label>
+              <input type="text" id="edit-thoiHanBH" placeholder="Ví dụ: 12" class="w-full bg-white dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-1.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+            </div>
+            <!-- Bắt đầu BH -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">Bắt đầu BH *</label>
+              <input type="text" id="edit-batDauBH" placeholder="DD/MM/YYYY" class="w-full bg-white dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-1.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+            </div>
+            <!-- Kết thúc BH -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">Kết thúc BH (Tính gợi ý)</label>
+              <input type="text" id="edit-ketThucBH" placeholder="DD/MM/YYYY" class="w-full bg-white dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-1.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- % ROS -->
           <div>
             <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">% ROS</label>
             <input type="text" id="edit-ros" class="w-full bg-slate-55 dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
           </div>
-        </div>
-
-        <!-- Loại Hợp đồng DV -->
-        <div>
-          <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">Loại Hợp đồng Dịch vụ</label>
-          <input type="text" id="edit-loaiHD" class="w-full bg-slate-55 dark:bg-black border border-slate-200 dark:border-slate-800 rounded-lg px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-brand-500">
         </div>
 
         <!-- Footer Buttons -->
@@ -641,19 +661,19 @@
             <p class="text-slate-800 dark:text-white font-semibold">Kéo & thả file Excel (.xlsx, .xls) hoặc CSV vào đây</p>
             <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Hoặc nhấp chuột để chọn tệp tin từ máy tính</p>
           </div>
-          <span class="text-[10px] text-brand-500 dark:text-brand-400 bg-brand-500/5 dark:bg-brand-500/5 border border-brand-500/20 px-2.5 py-0.5 rounded-full font-semibold">Định dạng hỗ trợ: .xlsx, .xls, .csv</span>
+          <span class="text-[10px] text-brand-400 bg-brand-500/5 dark:bg-brand-500/5 border border-brand-500/20 px-2.5 py-0.5 rounded-full font-semibold">Định dạng hỗ trợ: .xlsx, .xls, .csv</span>
           <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" class="hidden" onchange="handleFileSelect(event)">
         </div>
 
-        <div class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed space-y-2">
-          <p class="font-semibold text-slate-800 dark:text-slate-300">💡 Lưu ý cấu trúc tiêu đề cột:</p>
-          <p>Hệ thống tự động phân tích và khớp tất cả 19 cột hạch toán thời gian thực chính xác theo tệp mẫu của bạn.</p>
+        <div class="text-slate-400 text-xs leading-relaxed space-y-2">
+          <p class="font-semibold text-slate-850 dark:text-slate-300">💡 Lưu ý cấu trúc tiêu đề cột:</p>
+          <p>Hệ thống tự động phân tích và khớp tất cả 22 cột hạch toán thời gian thực chính xác theo tệp mẫu của bạn.</p>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="p-4 bg-slate-50 dark:bg-black/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-        <button onclick="confirmRestoreDefault()" class="text-rose-500 hover:text-rose-400 px-3 py-2 text-xs font-bold uppercase tracking-wider transition">
+        <button onclick="confirmRestoreDefault()" class="text-rose-500 hover:text-rose-450 px-3 py-2 text-xs font-bold uppercase tracking-wider transition">
           Khôi phục dữ liệu gốc
         </button>
         <button onclick="toggleImportModal()" class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-white px-4 py-2 rounded-lg text-xs font-bold uppercase transition">
@@ -731,25 +751,12 @@
   <script>
     // Embedded sample dataset parsed directly from the user's master Excel spreadsheet structure
     const defaultProjects = [
-      { stt: "1", ma: "VV0001", ten: "Dịch vụ cung cấp cho JVPC", vietTat: "JVPC", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0001", tenKH: "Japan Vietnam Petroleum Company", pm: "Lê Văn Tiến", pgd: "Trần Hồng Nam", namBD: "2020", namKT: "2025", soHD: "HD-JVPC-01", loaiHD: "Trọn gói", baoHanh: "5%", ros: "12%", location: "Vũng Tàu" },
-      { stt: "2", ma: "VV0002", ten: "Dịch vụ cung cấp cho KNOC", vietTat: "KNOC", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0002", tenKH: "Korea National Oil Corporation", pm: "Lê Văn Tiến", pgd: "Trần Hồng Nam", namBD: "2021", namKT: "2026", soHD: "HD-KNOC-02", loaiHD: "Theo thời gian", baoHanh: "5%", ros: "11%", location: "Offshore" },
-      { stt: "3", ma: "VV0003", ten: "Dịch vụ cung cấp cho PCV", vietTat: "PCV", kt: "Thùy Nhung", chiPhi: "6313", doanhThu: "51133", costController: "Vũ Hải Đăng", maKH: "KH1677", tenKH: "Văn Phòng Điều Hành Nhà Thầu Công Ty Petronas Carigali Overseas SDN., BHD", pm: "Phạm Minh Tuấn", pgd: "Nguyễn Anh Thư", namBD: "2022", namKT: "2024", soHD: "HD-PCV-99", loaiHD: "Đơn giá", baoHanh: "", ros: "8%", location: "TP. Hồ Chí Minh" },
-      { stt: "4", ma: "VV0004", ten: "Dịch vụ cung cấp cho Nam Côn Sơn", vietTat: "NCS", kt: "Việt An", chiPhi: "6316", doanhThu: "51136", costController: "Nguyễn Văn Toàn", maKH: "KH0004", tenKH: "Nam Con Son Pipeline", pm: "Hoàng Thanh Sơn", pgd: "Trần Hồng Nam", namBD: "2019", namKT: "2023", soHD: "HD-NCS-04", loaiHD: "Trọn gói", baoHanh: "10%", ros: "14%", location: "Bà Rịa - Vũng Tàu" },
-      { stt: "5", ma: "VV0005", ten: "Dịch vụ cung cấp cho PVEP trong nước", vietTat: "PVEP-DOM", kt: "Tiên", chiPhi: "6313", doanhThu: "51133", costController: "Vũ Hải Đăng", maKH: "KH0005", tenKH: "Tổng Công ty Thăm dò Khai thác Dầu khí", pm: "Phạm Minh Tuấn", pgd: "Nguyễn Anh Thư", namBD: "2022", namKT: "2025", soHD: "HD-PVEP-05", loaiHD: "Cung cấp dịch vụ", baoHanh: "", ros: "7%", location: "Hà Nội" },
-      { stt: "6", ma: "VV0006", ten: "Dịch vụ cung cấp cho CLJOC", vietTat: "CLJOC", kt: "Diệp", chiPhi: "6313", doanhThu: "51133", costController: "Trần Thế Hải", maKH: "KH0012", tenKH: "Công ty Liên Doanh Điều Hành Cửu Long (BL 15-1)", pm: "Bùi Đình Đông", pgd: "Trần Hồng Nam", namBD: "2021", namKT: "2024", soHD: "HD-CLJOC-06", loaiHD: "Trọn gói", baoHanh: "5%", ros: "10%", location: "Bồn trũng Cửu Long" },
-      { stt: "7", ma: "VV0007", ten: "Dịch vụ cung cấp cho TNK", vietTat: "TNK", kt: "Huế", chiPhi: "6311", doanhThu: "51131", costController: "Trần Thế Hải", maKH: "KH0007", tenKH: "TNK Vietnam B.V.", pm: "Trần Minh Quân", pgd: "Lê Quang Hiển", namBD: "2018", namKT: "2023", soHD: "HD-TNK-07", loaiHD: "Trọn gói", baoHanh: "5%", ros: "9%", location: "Vũng Tàu" },
-      { stt: "8", ma: "VV0008", ten: "Cung cấp dịch vụ khảo sát cho Hoàng Long JOC", vietTat: "HLJOC Survey", kt: "Tú", chiPhi: "6313", doanhThu: "51133", costController: "Nguyễn Văn Toàn", maKH: "KH0015", tenKH: "Hoàng Long Joint Operating Company", pm: "Hoàng Quốc Việt", pgd: "Trần Hồng Nam", namBD: "2020", namKT: "2024", soHD: "HD-HLJOC-08", loaiHD: "Khảo sát", baoHanh: "5%", ros: "11%", location: "Bà Rịa - Vũng Tàu" },
-      { stt: "236", ma: "VV0236", ten: "Dự án LDV-A Onshore Commissioning", vietTat: "LDV-A Onshore", kt: "Việt An", chiPhi: "6316", doanhThu: "51136", costController: "Trần Thế Hải", maKH: "KH0236", tenKH: "Liên doanh Việt - Nga Vietsovpetro", pm: "Vũ Hải Đăng", pgd: "Nguyễn Anh Thư", namBD: "2023", namKT: "2025", soHD: "HD-LDV-236", loaiHD: "Commissioning", baoHanh: "5%", ros: "13%", location: "Hải Phòng" },
-      { stt: "237", ma: "VV0237", ten: "Cung cấp dịch vụ chế tạo hệ thống neo Turret​ cho DA Block B", vietTat: "Turret Block B", kt: "Diệp", chiPhi: "6318", doanhThu: "51138", costController: "Nguyễn Văn Toàn", maKH: "KH0237", tenKH: "Phú Quốc POC", pm: "Nguyễn Văn Toàn", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2027", soHD: "HD-TURRET-237", loaiHD: "Chế tạo", baoHanh: "10%", ros: "15%", location: "Vũng Tàu" },
-      { stt: "238", ma: "VV0238", ten: "Cung cấp dịch vụ cho TCT Phân bón hóa chất dầu khí VN", vietTat: "PVFCCo Service", kt: "Tiên", chiPhi: "6313", doanhThu: "51133", costController: "Vũ Hải Đăng", maKH: "KH4209", tenKH: "Tổng Công Ty Phân Bón và Hóa Chất Dầu Khí - CTCP", pm: "Trần Minh Quân", pgd: "Trần Hồng Nam", namBD: "2023", namKT: "2024", soHD: "HD-PVFCC-238", loaiHD: "Cung cấp dịch vụ", baoHanh: "", ros: "8%", location: "Phú Mỹ" },
-      { stt: "239", ma: "VV0239", ten: "Cung cấp dịch vụ cho KH Chartering Company (Singapore) thuê sà lan Transporter", vietTat: "Chartering SG", kt: "Huế", chiPhi: "6316", doanhThu: "51136", costController: "Trần Thế Hải", maKH: "KH0239", tenKH: "Chartering Company (Singapore) Pte Ltd", pm: "Lâm Quang Huy", pgd: "Lê Quang Hiển", namBD: "2023", namKT: "2025", soHD: "HD-TRANS-239", loaiHD: "Cho thuê thiết bị", baoHanh: "", ros: "10%", location: "Quốc tế" },
-      { stt: "240", ma: "VV0240", ten: "Cung cấp nhóm nhân sự OM LDV cho TCT", vietTat: "OM LDV Personnel", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Hoàng Quốc Việt", pgd: "Trần Hồng Nam", namBD: "2024", namKT: "2026", soHD: "HD-OMLDV-240", loaiHD: "Cung ứng nhân sự", baoHanh: "5%", ros: "11%", location: "Vũng Tàu" },
-      { stt: "241", ma: "VV0241", ten: "DA Lac Da Vang FPSO", vietTat: "LDV FPSO", kt: "Thùy Nhung", chiPhi: "6316", doanhThu: "51136", costController: "Vũ Hải Đăng", maKH: "KH0241", tenKH: "Murphy Oil Vietnam", pm: "Trần Hoàng Nam", pgd: "Nguyễn Anh Thư", namBD: "2024", namKT: "2028", soHD: "HD-LDV-FPSO", loaiHD: "EPCI", location: "Bồn trũng Cửu Long" },
-      { stt: "242", ma: "VV0242", ten: "Cung cấp nhân sự cho Dự án LSPET - TCT PTSC", vietTat: "LSPET PTSC", kt: "Tú", chiPhi: "6311", doanhThu: "51131", costController: "Nguyễn Văn Toàn", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Trần Văn Bình", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2025", soHD: "HD-LSPET-242", loaiHD: "Cung cấp nhân sự", location: "Long Sơn" }
+      { stt: "1", ma: "VV0001", ten: "Dịch vụ cung cấp cho JVPC", vietTat: "JVPC", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0001", tenKH: "Japan Vietnam Petroleum Company", pm: "Lê Văn Tiến", pgd: "Trần Hồng Nam", namBD: "2020", namKT: "2025", soHD: "HD-JVPC-01", loaiHD: "DV O&M", baoHanh: "1%", thoiHanBH: "12 tháng", batDauBH: "01/01/2026", ketThucBH: "01/01/2027", ros: "12%", location: "Việt Nam" },
+      { stt: "2", ma: "VV0002", ten: "Dịch vụ cung cấp cho KNOC", vietTat: "KNOC", kt: "Lữ Nhung", chiPhi: "6314", doanhThu: "51134", costController: "Trần Thế Hải", maKH: "KH0002", tenKH: "Korea National Oil Corporation", pm: "Lê Văn Tiến", pgd: "Trần Hồng Nam", namBD: "2021", namKT: "2026", soHD: "HD-KNOC-02", loaiHD: "Theo thời gian", baoHanh: "5%", thoiHanBH: "", batDauBH: "", ketThucBH: "", ros: "11%", location: "Offshore" },
+      { stt: "3", ma: "VV0003", ten: "Dịch vụ cung cấp cho PCV", vietTat: "PCV", kt: "Thùy Nhung", chiPhi: "6313", doanhThu: "51133", costController: "Vũ Hải Đăng", maKH: "KH1677", tenKH: "Văn Phòng Điều Hành Nhà Thầu Công Ty Petronas Carigali", pm: "Phạm Minh Tuấn", pgd: "Nguyễn Anh Thư", namBD: "2022", namKT: "2024", soHD: "HD-PCV-99", loaiHD: "DV O&M", baoHanh: "", thoiHanBH: "", batDauBH: "", ketThucBH: "", ros: "8%", location: "TP. Hồ Chí Minh" }
     ];
 
-    // ĐƯỜNG DẪN APPS SCRIPT LIÊN KẾT ĐÁM MÂY ĐƯỢC CHÈN SẴN MẶC ĐỊNH
-    const defaultCloudUrl = "https://script.google.com/macros/s/AKfycbzwnV_dHqIi8LtN9pmPaaFherV9NDrMPNZl93zXpMzHpCwa2vLlgV82RsUfXuIa1KnM/exec";
+    const defaultCloudUrl = "https://script.google.com/macros/s/AKfycbxyX1WaBNSZOHFTDCdnu8ZemNfSfN8gGvVVftSLSa5kliuhVXCUiv0gjUFMn_k6y-Yw/exec";
 
     let projects = [];
     let currentLayout = 'table';
@@ -757,13 +764,11 @@
     let selectedAccountFilter = null;
     let selectedProjectStt = null;
 
-    // Cloud Database Configurations
     let cloudUrl = "";
     let isCloudConnected = false;
-    let isAuthorized = false; // State of Admin password verification
+    let isAuthorized = false;
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Mặc định luôn khởi động Theme Sáng (Light Mode) nếu chưa lưu tùy chọn trước đó
       const savedTheme = localStorage.getItem('project_nexus_theme') || 'light';
       if (savedTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -771,19 +776,16 @@
         document.documentElement.classList.remove('dark');
       }
 
-      // TỰ ĐỘNG CHUYỂN ĐỔI CHẾ ĐỘ THẺ (GRID CARD) TRÊN THIẾT BỊ DI ĐỘNG DƯỚI 768PX
       if (window.innerWidth < 768) {
         currentLayout = 'grid';
       }
 
-      // Check Cloud URL from localStorage or fallback to default baked-in url
       const savedCloudUrl = localStorage.getItem('project_nexus_cloud_url') || defaultCloudUrl;
       if (savedCloudUrl && savedCloudUrl !== "") {
         cloudUrl = savedCloudUrl;
         isCloudConnected = true;
       }
 
-      // Check session auth
       const authSession = sessionStorage.getItem('project_nexus_auth_session');
       if (authSession === 'true') {
         isAuthorized = true;
@@ -792,6 +794,7 @@
       loadDatabase();
       lucide.createIcons();
       setupKeyboardShortcuts();
+      setupDateCalculators();
     });
 
     function toggleTheme() {
@@ -817,7 +820,47 @@
       });
     }
 
-    // Load database based on connection status (Cloud or Local)
+    // Helper functions for Date DD/MM/YYYY Parsing and Addition
+    function parseDateDMY(str) {
+      if (!str) return null;
+      const parts = str.split('/');
+      if (parts.length !== 3) return null;
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // 0-based index
+      const year = parseInt(parts[2], 10);
+      if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+      return new Date(year, month, day);
+    }
+
+    function formatDateDMY(date) {
+      if (!date) return '';
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    // Register dynamic autocalculator listeners
+    function setupDateCalculators() {
+      const calculateWarranty = () => {
+        const startStr = document.getElementById('edit-batDauBH').value.trim();
+        const durationStr = document.getElementById('edit-thoiHanBH').value.trim();
+        
+        // Strip non-numbers (e.g. "6 tháng" -> "6")
+        const months = parseInt(durationStr.replace(/\D/g, ''), 10);
+        const startDate = parseDateDMY(startStr);
+        
+        if (startDate && !isNaN(months)) {
+          const endDate = new Date(startDate);
+          endDate.setMonth(startDate.getMonth() + months);
+          document.getElementById('edit-ketThucBH').value = formatDateDMY(endDate);
+        }
+      };
+
+      document.getElementById('edit-batDauBH').addEventListener('input', calculateWarranty);
+      document.getElementById('edit-thoiHanBH').addEventListener('input', calculateWarranty);
+    }
+
     function loadDatabase() {
       updateAuthUIVisibility();
       updateCloudUIVisibility();
@@ -840,10 +883,8 @@
       }
     }
 
-    // Live Sync pull from Google Sheets database
     function fetchFromCloud() {
       document.getElementById('loading-overlay').classList.remove('hidden');
-      
       const getUrl = `${cloudUrl}?nocache=${new Date().getTime()}`;
 
       fetch(getUrl)
@@ -856,7 +897,6 @@
             refreshUI();
           } else {
             showToast(`Lỗi kết nối Cloud: ${res.error || 'Cấu trúc không hợp lệ'}`, 'error');
-            // fallback to local on failure
             isCloudConnected = false;
             updateCloudUIVisibility();
             loadDatabase();
@@ -872,24 +912,20 @@
         });
     }
 
-    // Push local state sync to Google Sheets database
     function syncWithCloud() {
       if (!isCloudConnected || !cloudUrl) return;
-
       document.getElementById('loading-overlay').classList.remove('hidden');
 
       const payload = {
         action: "save_all",
-        password: "KT@2026", // Admin write password auth
+        password: "KT@2026",
         projects: projects
       };
 
       fetch(cloudUrl, {
         method: "POST",
-        mode: "no-cors", // Use no-cors for basic deployment fallback, or standard CORS on server
-        headers: {
-          "Content-Type": "application/json"
-        },
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       })
       .then(() => {
@@ -903,19 +939,18 @@
       });
     }
 
-    // Lock / Unlock Permission handlers
     function updateAuthUIVisibility() {
       const authBtn = document.getElementById('auth-status-btn');
       const addBtn = document.getElementById('add-btn-disabled');
       const importBtn = document.getElementById('import-btn-disabled');
 
       if (isAuthorized) {
-        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450 hover:bg-emerald-500/20";
+        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-455 hover:bg-emerald-500/20";
         authBtn.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5"></i><span class="hidden sm:inline">Đã Mở Khóa</span><span class="sm:hidden">Sửa</span>`;
         addBtn.removeAttribute('disabled');
         importBtn.removeAttribute('disabled');
       } else {
-        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-450 hover:bg-rose-50/20";
+        authBtn.className = "flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all duration-300 bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-455 hover:bg-rose-50/20";
         authBtn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i><span class="hidden sm:inline">Mở khóa Chỉnh sửa</span><span class="sm:hidden">Khóa</span>`;
         addBtn.setAttribute('disabled', 'true');
         importBtn.setAttribute('disabled', 'true');
@@ -925,14 +960,12 @@
 
     function triggerAuthAction() {
       if (isAuthorized) {
-        // Log out authorization state
         isAuthorized = false;
         sessionStorage.removeItem('project_nexus_auth_session');
         updateAuthUIVisibility();
-        handleSearch(); // rerender table rows to hide actions
-        showToast('Đã đóng phiên làm việc. Hệ thống đã được Khóa an toàn!', 'info');
+        handleSearch();
+        showToast('Đã khóa phiên hạch toán an toàn!', 'info');
       } else {
-        // Open verification modal
         document.getElementById('auth-password-input').value = "";
         document.getElementById('auth-modal').classList.remove('hidden');
         document.getElementById('auth-password-input').focus();
@@ -950,14 +983,13 @@
         sessionStorage.setItem('project_nexus_auth_session', 'true');
         updateAuthUIVisibility();
         closeAuthModal();
-        handleSearch(); // rerender table rows to expose actions
-        showToast('Cấp quyền thành công! Đã kích hoạt tính năng chỉnh sửa.', 'success');
+        handleSearch();
+        showToast('Cấp quyền thành công! Đã mở khóa tính năng biên tập.', 'success');
       } else {
         showToast('Mật mã kế toán không đúng! Vui lòng thử lại.', 'error');
       }
     }
 
-    // Google Sheets Cloud Connection configuration controllers
     function updateCloudUIVisibility() {
       const cloudBtn = document.getElementById('cloud-status-btn');
       if (isCloudConnected) {
@@ -970,62 +1002,12 @@
       lucide.createIcons();
     }
 
-    // Cloud Button Acts as live Pull sync if connected, config modal if disconnected
     function handleCloudBtnClick() {
       if (isCloudConnected) {
-        fetchFromCloud(); // Pull directly
+        fetchFromCloud();
       } else {
-        openCloudConfig();
+        showToast("Đang kết nối đám mây qua Apps Script chính thức...", "info");
       }
-    }
-
-    function openCloudConfig() {
-      document.getElementById('cloud-url-input').value = cloudUrl;
-      document.getElementById('cloud-modal').classList.remove('hidden');
-    }
-
-    function closeCloudConfig() {
-      document.getElementById('cloud-modal').classList.add('hidden');
-    }
-
-    function verifyAndConnectCloud() {
-      const url = document.getElementById('cloud-url-input').value.trim();
-      if (!url) {
-        // Disconnect cloud state
-        cloudUrl = "";
-        isCloudConnected = false;
-        localStorage.removeItem('project_nexus_cloud_url');
-        updateCloudUIVisibility();
-        closeCloudConfig();
-        loadDatabase();
-        showToast('Đã ngắt kết nối Cloud, quay về sử dụng dữ liệu Local.', 'info');
-        return;
-      }
-
-      // Verify connection by making a GET request
-      document.getElementById('loading-overlay').classList.remove('hidden');
-      fetch(`${url}?nocache=${new Date().getTime()}`)
-        .then(response => response.json())
-        .then(res => {
-          document.getElementById('loading-overlay').classList.add('hidden');
-          if (res.success && res.data) {
-            cloudUrl = url;
-            isCloudConnected = true;
-            localStorage.setItem('project_nexus_cloud_url', url);
-            projects = res.data;
-            updateCloudUIVisibility();
-            closeCloudConfig();
-            refreshUI();
-            showToast('Kết nối Google Sheets Cloud Database thành công!', 'success');
-          } else {
-            showToast(`Mã Apps Script trả về lỗi: ${res.error || 'Sai định dạng'}`, 'error');
-          }
-        })
-        .catch(err => {
-          document.getElementById('loading-overlay').classList.add('hidden');
-          console.error(err);
-          showToast('Không kiểm tra được đường dẫn kết nối! Hãy chắc chắn Web App đã bật ở quyền "Anyone".', 'error');
-        });
     }
 
     function refreshUI() {
@@ -1172,7 +1154,7 @@
       return textStr.replace(regex, '<mark class="bg-brand-500/30 text-brand-600 dark:text-emerald-300 font-semibold px-0.5 rounded border border-brand-500/25">$1</mark>');
     }
 
-    // Draws standard UI layout with 19 structural columns matching the image
+    // Draws standard UI layout with 22 structural columns matching the image
     function renderMainContent(data, tokens) {
       const container = document.getElementById('content-container');
       
@@ -1194,7 +1176,6 @@
       if (currentLayout === 'table') {
         let tableRows = '';
         data.forEach(item => {
-          // Hide or Show action buttons based on admin permission state
           const actionButtons = isAuthorized ? `
             <div class="flex items-center justify-end space-x-1 pl-2">
               <button onclick="event.stopPropagation(); openEditModal('${item.stt}')" class="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400" title="Chỉnh sửa">
@@ -1204,7 +1185,7 @@
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
-          ` : `<span class="text-[10px] text-slate-450 italic">Đã khóa</span>`;
+          ` : `<span class="text-[10px] text-slate-455 italic">Đã khóa</span>`;
 
           tableRows += `
             <tr onclick="openDetailsDrawer('${item.stt}')" class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800/60 transition duration-150 cursor-pointer text-slate-700 dark:text-slate-300">
@@ -1228,13 +1209,16 @@
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 font-semibold">${highlight(item.costController, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 font-mono">${highlight(item.maKH, tokens)}</td>
               <td class="px-3 py-3.5 text-xs text-slate-600 dark:text-slate-300 max-w-[200px] truncate" title="${item.tenKH}">${highlight(item.tenKH, tokens)}</td>
-              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-400 font-semibold">${highlight(item.pm, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-750 dark:text-slate-400 font-semibold">${highlight(item.pm, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-450 font-medium">${highlight(item.pgd, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namBD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 text-center font-mono">${highlight(item.namKT, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-600 dark:text-slate-300 font-semibold max-w-[120px] truncate" title="${item.soHD}">${highlight(item.soHD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400 truncate max-w-[120px]">${highlight(item.loaiHD, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-emerald-600 dark:text-emerald-400 text-center font-bold">${highlight(item.baoHanh, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-semibold">${highlight(item.thoiHanBH, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${highlight(item.batDauBH, tokens)}</td>
+              <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-700 dark:text-slate-300 text-center font-mono">${highlight(item.ketThucBH, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-emerald-600 dark:text-emerald-400 text-center font-bold font-mono">${highlight(item.ros, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">${highlight(item.location, tokens)}</td>
               <td class="px-3 py-3.5 whitespace-nowrap text-right sticky right-0 bg-white dark:bg-black group-hover:bg-slate-50 dark:group-hover:bg-slate-800 transition">
@@ -1267,6 +1251,9 @@
                     <th class="px-3 py-3.5 w-36">Số Hợp đồng</th>
                     <th class="px-3 py-3.5 w-36">Loại Hợp đồng</th>
                     <th class="px-3 py-3.5 text-center w-24">% Bảo Hành</th>
+                    <th class="px-3 py-3.5 text-center w-28">Thời hạn BH</th>
+                    <th class="px-3 py-3.5 text-center w-28">Bắt đầu BH</th>
+                    <th class="px-3 py-3.5 text-center w-28">Kết thúc BH</th>
                     <th class="px-3 py-3.5 text-center w-24">% ROS</th>
                     <th class="px-3 py-3.5 w-32">Location</th>
                     <th class="px-3 py-3.5 text-right sticky right-0 bg-slate-50 dark:bg-black/60 w-20">Thao tác</th>
@@ -1280,7 +1267,7 @@
           </div>
         `;
       } else {
-        // Grid Card Layout (Optimized for Mobile view)
+        // Mobile-First Responsive Grid Cards
         let cardBlocks = '';
         data.forEach(item => {
           const actionButtons = isAuthorized ? `
@@ -1324,14 +1311,10 @@
                     <span>Cost Controller:</span>
                     <span class="text-slate-700 dark:text-slate-300 font-semibold">${highlight(item.costController, tokens)}</span>
                   </div>
-                  <div class="flex items-center justify-between">
-                    <span>Project Manager (PM):</span>
-                    <span class="text-slate-700 dark:text-slate-300 font-medium">${highlight(item.pm, tokens)}</span>
-                  </div>
                 </div>
               </div>
 
-              <!-- Cost/Revenue block -->
+              <!-- Cost/Revenue footer stack -->
               <div class="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-slate-800/40 pt-3 bg-slate-50/50 dark:bg-slate-950/20 -mx-5 -mb-5 p-4 rounded-b-2xl">
                 <div class="text-center py-1.5 rounded-lg bg-rose-500/5 border border-rose-500/10">
                   <span class="block text-[8px] text-rose-500 dark:text-rose-400 uppercase font-bold">Chi Phí</span>
@@ -1388,7 +1371,10 @@
       document.getElementById('drawer-customer-code').textContent = item.maKH || '---';
       document.getElementById('drawer-customer-name').textContent = item.tenKH || 'Chưa liên kết';
       document.getElementById('drawer-contract-no').textContent = item.soHD || 'Không có';
-      document.getElementById('drawer-warranty').textContent = item.baoHanh || '0%';
+      document.getElementById('drawer-warranty-pct').textContent = item.baoHanh || '0%';
+      document.getElementById('drawer-warranty-duration').textContent = item.thoiHanBH || 'Không bảo hành';
+      document.getElementById('drawer-warranty-start').textContent = item.batDauBH || '---';
+      document.getElementById('drawer-warranty-end').textContent = item.ketThucBH || '---';
       document.getElementById('drawer-contract-type').textContent = item.loaiHD || 'Thông thường';
       
       document.getElementById('drawer-pm').textContent = item.pm || 'Chưa chỉ định';
@@ -1473,6 +1459,9 @@
         document.getElementById('edit-namKT').value = item.namKT || '';
         document.getElementById('edit-soHD').value = item.soHD || '';
         document.getElementById('edit-baoHanh').value = item.baoHanh || '';
+        document.getElementById('edit-thoiHanBH').value = item.thoiHanBH || '';
+        document.getElementById('edit-batDauBH').value = item.batDauBH || '';
+        document.getElementById('edit-ketThucBH').value = item.ketThucBH || '';
         document.getElementById('edit-ros').value = item.ros || '';
         document.getElementById('edit-loaiHD').value = item.loaiHD || '';
       }
@@ -1508,9 +1497,12 @@
         namBD: document.getElementById('edit-namBD').value.trim(),
         namKT: document.getElementById('edit-namKT').value.trim(),
         soHD: document.getElementById('edit-soHD').value.trim(),
+        loaiHD: document.getElementById('edit-loaiHD').value.trim(),
         baoHanh: document.getElementById('edit-baoHanh').value.trim(),
-        ros: document.getElementById('edit-ros').value.trim(),
-        loaiHD: document.getElementById('edit-loaiHD').value.trim()
+        thoiHanBH: document.getElementById('edit-thoiHanBH').value.trim(),
+        batDauBH: document.getElementById('edit-batDauBH').value.trim(),
+        ketThucBH: document.getElementById('edit-ketThucBH').value.trim(),
+        ros: document.getElementById('edit-ros').value.trim()
       };
 
       if (isCloudConnected && cloudUrl) {
@@ -1891,7 +1883,7 @@
         return idx !== -1 ? idx : fallbackIdx;
       };
 
-      // 19 exact mapping coordinates
+      // 22 exact mapping coordinates
       keyMap.stt = matchKey('stt', 0);
       keyMap.ma = matchKey('mã vụ việc', 1);
       keyMap.ten = matchKey('tên vụ việc', 2);
@@ -1909,8 +1901,11 @@
       keyMap.soHD = matchKey('hợp đồng', 14);
       keyMap.loaiHD = matchKey('loại hợp đồng', 15);
       keyMap.baoHanh = matchKey('bảo hành', 16);
-      keyMap.ros = matchKey('ros', 17);
-      keyMap.location = matchKey('location', 18);
+      keyMap.thoiHanBH = matchKey('thời hạn bh', 17);
+      keyMap.batDauBH = matchKey('bắt đầu bh', 18);
+      keyMap.ketThucBH = matchKey('kết thúc bh', 19);
+      keyMap.ros = matchKey('ros', 20);
+      keyMap.location = matchKey('location', 21);
 
       const parsedProjects = [];
       for (let r = headerRowIndex + 1; r < rawRows.length; r++) {
@@ -1939,6 +1934,9 @@
             soHD: String(row[keyMap.soHD] || '').trim(),
             loaiHD: String(row[keyMap.loaiHD] || '').trim(),
             baoHanh: String(row[keyMap.baoHanh] || '').trim(),
+            thoiHanBH: String(row[keyMap.thoiHanBH] || '').trim(),
+            batDauBH: String(row[keyMap.batDauBH] || '').trim(),
+            ketThucBH: String(row[keyMap.ketThucBH] || '').trim(),
             ros: String(row[keyMap.ros] || '').trim(),
             location: String(row[keyMap.location] || '').trim()
           });
@@ -1961,20 +1959,19 @@
       }
     }
 
-    // High-End Excel export utilizing SheetJS .xlsx architecture matching the columns
+    // High-End Excel export mapping standard 22 columns
     function exportToExcel() {
       if (projects.length === 0) {
         showToast('Không có dữ liệu để xuất file Excel!', 'error');
         return;
       }
 
-      // Column headers in precise 19-column order
       const headers = [
         "STT", "Mã vụ việc", "Tên vụ việc dự án", "Tên DA viết tắt",
         "Tên KT Phụ trách", "Chi Phí", "Doanh Thu", "Cost Controller", 
         "Mã KH chính", "Tên KH chính", "PM", "PGD PT", "Năm bắt đầu", 
         "Năm kết thúc", "Số Hợp đồng", "Loại Hợp đồng DV", "% Bảo Hành", 
-        "% ROS", "Location"
+        "Thời hạn BH", "Bắt đầu BH", "Kết thúc BH", "% ROS", "Location"
       ];
 
       const rows = projects.map(p => ({
@@ -1995,6 +1992,9 @@
         "Số Hợp đồng": p.soHD,
         "Loại Hợp đồng DV": p.loaiHD,
         "% Bảo Hành": p.baoHanh,
+        "Thời hạn BH": p.thoiHanBH,
+        "Bắt đầu BH": p.batDauBH,
+        "Kết thúc BH": p.ketThucBH,
         "% ROS": p.ros,
         "Location": p.location
       }));
@@ -2019,6 +2019,9 @@
         { wch: 20 },  // Số Hợp đồng
         { wch: 20 },  // Loại Hợp đồng DV
         { wch: 12 },  // % Bảo Hành
+        { wch: 15 },  // Thời hạn BH
+        { wch: 15 },  // Bắt đầu BH
+        { wch: 15 },  // Kết thúc BH
         { wch: 12 },  // % ROS
         { wch: 15 }   // Location
       ];
@@ -2050,13 +2053,13 @@
       } else {
         iconWrapper.className = 'p-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400';
         icon.setAttribute('data-lucide', 'info');
-        toast.className = 'fixed bottom-5 right-5 bg-white dark:bg-slate-900 border border-indigo-500/30 text-slate-900 dark:text-slate-100 px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-0 opacity-100 flex items-center space-x-3 max-w-sm transition-all duration-300';
+        toast.className = 'fixed bottom-5 right-5 bg-white dark:bg-slate-900 border border-indigo-500/30 text-slate-900 dark:text-slate-100 px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 flex items-center space-x-3 max-w-sm transition-all duration-300 pointer-events-none';
       }
 
       lucide.createIcons();
 
       setTimeout(() => {
-        toast.className = 'fixed bottom-5 right-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 text-slate-500 px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 flex items-center space-x-3 max-w-sm transition-all duration-300 pointer-events-none';
+        toast.className = 'fixed bottom-5 right-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 px-4 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 flex items-center space-x-3 max-w-sm transition-all duration-300 pointer-events-none';
       }, 4000);
     }
   </script>
