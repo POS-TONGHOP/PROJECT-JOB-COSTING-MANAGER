@@ -287,7 +287,7 @@
   </main>
 
   <!-- Side Drawer for Project Details (Đồng bộ flex & Sửa lỗi cuộn vuốt di động) -->
-  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl h-full h-[100dvh] bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex-col overflow-hidden">
+  <div id="details-drawer" class="fixed inset-y-0 right-0 w-full sm:max-w-xl h-full h-[100dvh] bg-white dark:bg-slate-950/95 border-l border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out hidden flex flex-col overflow-hidden">
     <!-- Drawer Header -->
     <div class="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between bg-slate-50 dark:bg-black/40 shrink-0">
       <div class="flex items-center space-x-2.5">
@@ -907,7 +907,7 @@
       document.getElementById('edit-batDauBH').addEventListener('input', calculateWarranty);
       document.getElementById('edit-thoiHanBH').addEventListener('input', calculateWarranty);
     }
-
+    // Verify and connect using local cache or default cloud link
     function loadDatabase() {
       updateAuthUIVisibility();
       updateCloudUIVisibility();
@@ -1431,10 +1431,7 @@
       document.getElementById('drawer-customer-code').textContent = item.maKH || '---';
       document.getElementById('drawer-customer-name').textContent = item.tenKH || 'Chưa liên kết';
       document.getElementById('drawer-contract-no').textContent = item.soHD || 'Không có';
-      document.getElementById('drawer-warranty-pct').textContent = item.baoHanh || '0%';
-      document.getElementById('drawer-warranty-duration').textContent = item.thoiHanBH || 'Không bảo hành';
-      document.getElementById('drawer-warranty-start').textContent = formatDateDisplay(item.batDauBH);
-      document.getElementById('drawer-warranty-end').textContent = formatDateDisplay(item.ketThucBH);
+      document.getElementById('drawer-warranty').textContent = item.baoHanh || '0%';
       document.getElementById('drawer-contract-type').textContent = item.loaiHD || 'Thông thường';
       
       document.getElementById('drawer-pm').textContent = item.pm || 'Chưa chỉ định';
@@ -1453,6 +1450,7 @@
 
       const drawer = document.getElementById('details-drawer');
       drawer.classList.remove('hidden');
+      drawer.classList.add('flex'); // Ép buộc chuyển đổi sang Flexbox để kích hoạt vùng cuộn nội bộ
       setTimeout(() => {
         drawer.classList.remove('translate-x-full');
       }, 50);
@@ -1463,6 +1461,7 @@
       drawer.classList.add('translate-x-full');
       setTimeout(() => {
         drawer.classList.add('hidden');
+        drawer.classList.remove('flex'); // Trả lại cấu trúc ẩn an toàn
       }, 300);
       selectedProjectStt = null;
     }
