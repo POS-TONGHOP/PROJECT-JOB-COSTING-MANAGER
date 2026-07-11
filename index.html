@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi" class="h-full">
 <head>
@@ -786,6 +785,9 @@
       { stt: "242", ma: "VV0242", ten: "Cung cấp nhân sự cho Dự án LSPET - TCT PTSC", vietTat: "LSPET PTSC", kt: "Tú", chiPhi: "6311", doanhThu: "51131", costController: "Nguyễn Văn Toàn", maKH: "KH0016", tenKH: "Tổng công ty Cổ phần Dịch vụ Kỹ thuật Dầu khí VN", pm: "Trần Văn Bình", pgd: "Lê Quang Hiển", namBD: "2024", namKT: "2025", soHD: "HD-LSPET-242", loaiHD: "Cung cấp nhân sự", baoHanh: "", ros: "6%", location: "Long Sơn" }
     ];
 
+    // ĐƯỜNG DẪN APPS SCRIPTS LIÊN KẾT ĐÁM MÂY ĐƯỢC CHÈN SẴN MẶC ĐỊNH
+    const defaultCloudUrl = "https://script.google.com/macros/s/AKfycbzwnV_dHqIi8LtN9pmPaaFherV9NDrMPNZl93zXpMzHpCwa2vLlgV82RsUfXuIa1KnM/exec";
+
     let projects = [];
     let currentLayout = 'table';
     let selectedKTFilter = null;
@@ -806,9 +808,9 @@
         document.documentElement.classList.remove('dark');
       }
 
-      // Check Cloud URL from localStorage
-      const savedCloudUrl = localStorage.getItem('project_nexus_cloud_url');
-      if (savedCloudUrl) {
+      // Check Cloud URL from localStorage or fallback to default baked-in url
+      const savedCloudUrl = localStorage.getItem('project_nexus_cloud_url') || defaultCloudUrl;
+      if (savedCloudUrl && savedCloudUrl !== "") {
         cloudUrl = savedCloudUrl;
         isCloudConnected = true;
       }
@@ -1098,7 +1100,7 @@
       });
 
       const accContainer = document.getElementById('quick-filters-accounts');
-      let accHtml = `<button onclick="setAccountFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedAccountFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-800'} transition">Tất cả</button>`;
+      let accHtml = `<button onclick="setAccountFilter(null)" class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${!selectedAccountFilter ? 'bg-brand-500 text-white border-brand-500/30' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'} transition">Tất cả</button>`;
       
       Object.keys(accountCounts).sort().forEach(acc => {
         const isActive = selectedAccountFilter === acc;
@@ -1374,11 +1376,11 @@
       const btnGrid = document.getElementById('layout-btn-grid');
 
       if (layout === 'table') {
-        btnTable.className = 'p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700';
+        btnTable.className = 'p-2 rounded-lg bg-slate-250 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700';
         btnGrid.className = 'p-2 rounded-lg bg-white dark:bg-black text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900';
       } else {
         btnTable.className = 'p-2 rounded-lg bg-white dark:bg-black text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900';
-        btnGrid.className = 'p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700';
+        btnGrid.className = 'p-2 rounded-lg bg-slate-250 dark:bg-slate-800 text-brand-600 dark:text-brand-400 border border-slate-300 dark:border-slate-700';
       }
       handleSearch();
     }
